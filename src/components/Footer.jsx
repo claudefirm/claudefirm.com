@@ -10,11 +10,12 @@ export default function Footer() {
             <p className="mt-3 text-slate text-[13px] leading-relaxed max-w-sm">
               ClaudeFirm is an operational tool. It does not provide legal advice.
               All AI-generated work product requires review and approval by a licensed attorney.
+              ClaudeFirm is not affiliated with, endorsed by, or associated with Anthropic, PBC.
             </p>
           </div>
           <div className="flex gap-8 text-[13px] font-display font-semibold">
-            <a href="#what-is" className="text-white/40 hover:text-white transition-colors duration-300">How It Works</a>
-            <a href="#safety" className="text-white/40 hover:text-white transition-colors duration-300">Safety</a>
+            <a href="#team" className="text-white/40 hover:text-white transition-colors duration-300">Your Team</a>
+            <a href="#trust" className="text-white/40 hover:text-white transition-colors duration-300">Trust</a>
             <a href="#faq" className="text-white/40 hover:text-white transition-colors duration-300">FAQ</a>
             <a href="#waitlist" className="text-white/40 hover:text-brass transition-colors duration-300">Waitlist</a>
           </div>
