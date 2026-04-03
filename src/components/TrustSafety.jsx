@@ -24,14 +24,14 @@ export default function TrustSafety() {
             </span>
           </div>
           <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight max-w-xl">
-            Every action is logged.{' '}
+            Six layers of defense.{' '}
             <br />
-            Every dollar is tracked.
+            Each assumes the others have failed.
           </h2>
           <p className="mt-5 text-slate-light text-lg leading-relaxed max-w-[540px]">
-            Your agents don't guess. They don't freelance. They don't send
-            anything without your approval. This is AI that respects the way
-            a law firm actually has to operate.
+            In financial services security, no single control is ever trusted
+            alone. We apply the same principle to AI agents handling your
+            most sensitive legal work. Break any layer — the others still hold.
           </p>
         </FadeIn>
 
@@ -54,11 +54,12 @@ export default function TrustSafety() {
         <FadeIn delay={400}>
           <div className="mt-14 pl-6 border-l-2 border-brass/30 max-w-xl">
             <p className="text-slate-light text-[15px] italic leading-relaxed">
-              "The lawyers who got sanctioned for AI-generated fake citations weren't
-              using bad AI. They were using AI without guardrails."
+              "Prompt injection is an unsolved problem at the AI model level.
+              The defense must be architectural — not a patch, not a filter,
+              not a hope that the model behaves."
             </p>
             <p className="mt-3 font-display font-semibold text-brass text-sm">
-              ClaudeFirm is all guardrails.
+              Built by an enterprise AI security engineer. Battle-tested in financial services.
             </p>
           </div>
         </FadeIn>

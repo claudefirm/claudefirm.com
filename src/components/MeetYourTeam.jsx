@@ -3,9 +3,9 @@ import FadeIn from './ui/FadeIn'
 import { TEAM_MEMBERS } from '../lib/constants'
 
 const AUTONOMY_COLORS = {
+  'Board review': 'bg-amber-500/10 text-amber-400 border-amber-500/20',
   'Full review': 'bg-blue-500/10 text-blue-400 border-blue-500/20',
-  'External review': 'bg-amber-500/10 text-amber-400 border-amber-500/20',
-  'Draft-only': 'bg-slate/10 text-slate-light border-slate/20',
+  'Draft only': 'bg-slate/10 text-slate-light border-slate/20',
 }
 
 export default function MeetYourTeam() {
@@ -16,13 +16,13 @@ export default function MeetYourTeam() {
           Meet Your Team
         </p>
         <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight text-white max-w-2xl">
-          Staff that never sleeps.{' '}
-          <span className="text-slate-light">Organized the way your firm already works.</span>
+          AI agents in an org chart.{' '}
+          <span className="text-slate-light">You sit at the top.</span>
         </h2>
         <p className="mt-5 text-slate-light text-lg leading-relaxed max-w-[640px]">
-          No new interfaces to learn. You delegate to agents the same way you
-          delegate to people — by role, with clear boundaries on what they can
-          do without asking.
+          The reporting structure IS the permission structure. An associate
+          can't sign a partner's name on a brief — and an AI agent can't
+          approve its own work or escalate its own permissions.
         </p>
       </FadeIn>
 

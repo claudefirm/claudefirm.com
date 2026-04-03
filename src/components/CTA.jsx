@@ -10,10 +10,10 @@ export default function CTA() {
       <div className="relative z-10 max-w-[640px] mx-auto px-6 py-24 md:py-32 text-center">
         <FadeIn>
           <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight">
-            Your back office is ready.
+            Security-first AI for your firm.
           </h2>
           <p className="mt-5 text-slate-light text-lg leading-relaxed">
-            Join the waitlist. We'll reach out when it's your turn.
+            Join the waitlist. We're onboarding firms that take client data seriously.
           </p>
         </FadeIn>
 
