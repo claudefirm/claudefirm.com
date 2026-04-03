@@ -10,7 +10,7 @@ export default function TheNumbers() {
           The Numbers
         </p>
         <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight text-gray-900 max-w-xl">
-          Time back. Revenue recovered.
+          The compound effect.
         </h2>
       </FadeIn>
 
