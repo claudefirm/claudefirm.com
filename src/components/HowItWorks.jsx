@@ -10,7 +10,7 @@ export default function HowItWorks() {
           How It Works
         </p>
         <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight text-gray-900 max-w-xl">
-          Three steps. Defense in depth.
+          Set up in an afternoon. Runs every day.
         </h2>
       </FadeIn>
 

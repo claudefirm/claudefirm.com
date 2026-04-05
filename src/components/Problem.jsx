@@ -10,19 +10,20 @@ export default function Problem() {
         <div className="lg:col-span-5">
           <FadeIn>
             <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight text-gray-900">
-              The Lethal Trifecta.
+              The 63% problem.
               <br />
-              <span className="text-slate">Why AI + law is a ticking time bomb.</span>
+              <span className="text-slate">Where your week actually goes.</span>
             </h2>
           </FadeIn>
           <FadeIn delay={100}>
             <div className="mt-8 pl-5 border-l-2 border-brass/40">
               <p className="text-slate italic text-lg leading-relaxed">
-                "Any two of these is manageable. All three together, and an attacker
-                can trick your AI into reading private data and sending it out."
+                The average small firm lawyer bills 37% of their working hours.
+                The other 63% is intake calls, invoice follow-ups, calendar
+                management, and the same 8 questions every new client asks.
               </p>
               <p className="mt-3 text-[13px] text-brass-muted font-display font-semibold">
-                — Simon Willison, AI security researcher
+                — Clio Legal Trends Report
               </p>
             </div>
           </FadeIn>

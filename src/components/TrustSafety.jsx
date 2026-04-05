@@ -24,18 +24,19 @@ export default function TrustSafety() {
             </span>
           </div>
           <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight max-w-xl">
-            Six layers of defense.{' '}
+            Your client data is safe.{' '}
             <br />
-            Each assumes the others have failed.
+            Here's exactly how.
           </h2>
           <p className="mt-5 text-slate-light text-lg leading-relaxed max-w-[540px]">
-            In financial services security, no single control is ever trusted
-            alone. We apply the same principle to AI agents handling your
-            most sensitive legal work. Break any layer — the others still hold.
+            You're already using ChatGPT or something like it. You know
+            you probably shouldn't be pasting client information into it.
+            ClaudeFirm was built from day one to handle privileged
+            information — by a security engineer, not a startup.
           </p>
         </FadeIn>
 
-        <div className="mt-14 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+        <div className="mt-14 grid grid-cols-1 md:grid-cols-2 gap-4">
           {TRUST_POINTS.map((point, i) => (
             <FadeIn key={point.title} delay={i * 50}>
               <div className="group flex gap-4 p-5 rounded border border-white/[0.06] bg-white/[0.02] hover:bg-white/[0.04] hover:border-brass/20 transition-all duration-400 h-full">
@@ -54,12 +55,12 @@ export default function TrustSafety() {
         <FadeIn delay={400}>
           <div className="mt-14 pl-6 border-l-2 border-brass/30 max-w-xl">
             <p className="text-slate-light text-[15px] italic leading-relaxed">
-              "Prompt injection is an unsolved problem at the AI model level.
-              The defense must be architectural — not a patch, not a filter,
-              not a hope that the model behaves."
+              "Would you hand a first-day temp your entire client list, every
+              privileged communication, and the ability to send emails on your
+              behalf? That's what most AI tools ask you to do."
             </p>
             <p className="mt-3 font-display font-semibold text-brass text-sm">
-              Built by an enterprise AI security engineer. Battle-tested in financial services.
+              ClaudeFirm doesn't. Every permission is earned, every action is supervised.
             </p>
           </div>
         </FadeIn>
