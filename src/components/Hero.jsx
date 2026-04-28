@@ -14,7 +14,7 @@ export default function Hero() {
           {/* Left content */}
           <div className="lg:col-span-7">
             <FadeIn delay={80}>
-              <h1 className="font-display font-bold text-[clamp(2.5rem,6vw,4.5rem)] leading-[1.05] tracking-tight">
+              <h1 className="font-display font-bold text-[clamp(2rem,7vw,4.5rem)] leading-[1.05] tracking-tight">
                 You went to law school{' '}
                 <br className="hidden md:block" />
                 to practice law.{' '}
