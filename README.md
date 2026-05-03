@@ -2,12 +2,25 @@
 
 Marketing site for ClaudeFirm. Static Vite + React + Tailwind, deployed to GitHub Pages.
 
-## Local
+## Local (host pnpm)
 
 ```bash
 pnpm install
 pnpm dev
 ```
+
+## Local (docker compose)
+
+For containerized iteration — same pnpm dev-server, no host node/pnpm
+required, what the Fourslide fleet's Head of Growth uses to iterate:
+
+```bash
+docker compose -f docker-compose.dev.yml up
+```
+
+Open http://localhost:5173 — Vite serves with hot reload. Edit `src/`
+and the page refreshes automatically. Tear down with
+`docker compose -f docker-compose.dev.yml down`.
 
 ## Deploy
 
