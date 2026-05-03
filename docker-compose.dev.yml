@@ -1,0 +1,44 @@
+# Local-iteration compose for the marketing site.
+#
+# Why: lets the Head of Growth agent (and any contributor) iterate
+# visually with a single command instead of remembering pnpm + dev-port
+# + binding flags. Hot reload works through the bind mount; node_modules
+# is a named volume so host pnpm-store and container pnpm-store don't
+# fight.
+#
+# Usage:
+#
+#   docker compose -f docker-compose.dev.yml up
+#
+# Then open http://localhost:5173 — Vite serves with HMR. Edit files in
+# src/ and the page reloads automatically.
+#
+# Tear down:
+#
+#   docker compose -f docker-compose.dev.yml down
+#
+# To clear the cached node_modules volume (e.g. after a lockfile bump):
+#
+#   docker compose -f docker-compose.dev.yml down -v
+services:
+  dev:
+    image: node:24-alpine
+    working_dir: /app
+    # Vite config doesn't set host/port, so pass via CLI. --host 0.0.0.0
+    # lets the dev server accept connections from outside the container;
+    # without it, the port mapping appears bound but every request hangs.
+    command: sh -c "corepack enable && pnpm install --frozen-lockfile && pnpm dev --host 0.0.0.0 --port 5173"
+    ports:
+      - "${MARKETING_DEV_PORT:-5173}:5173"
+    environment:
+      - NODE_ENV=development
+      # CHOKIDAR_USEPOLLING handles file-watch on bind mounts where
+      # inotify doesn't propagate from host (typical on macOS, also
+      # safer in dind sandboxes).
+      - CHOKIDAR_USEPOLLING=true
+    volumes:
+      - .:/app:cached
+      - node_modules:/app/node_modules
+
+volumes:
+  node_modules:
