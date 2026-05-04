@@ -13,22 +13,31 @@ export default function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left content */}
           <div className="lg:col-span-7">
+            <FadeIn delay={40}>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-8 rounded border border-brass/30 bg-brass/[0.06]">
+                <span className="w-1.5 h-1.5 rounded-full bg-brass animate-pulse" />
+                <span className="text-[11px] font-display font-semibold tracking-widest uppercase text-brass/90">
+                  Apple Silicon · MLX · 0 cloud calls
+                </span>
+              </div>
+            </FadeIn>
             <FadeIn delay={80}>
               <h1 className="font-display font-bold text-[clamp(2rem,7vw,4.5rem)] leading-[1.05] tracking-tight">
-                You went to law school{' '}
+                The Mac on your desk{' '}
                 <br className="hidden md:block" />
-                to practice law.{' '}
+                is a datacenter.{' '}
                 <br className="hidden md:block" />
-                <span className="text-brass">63% of your week has other plans.</span>
+                <span className="text-brass">Run your firm on it.</span>
               </h1>
             </FadeIn>
 
             <FadeIn delay={160}>
               <p className="mt-8 text-lg md:text-xl leading-relaxed text-slate-light max-w-[640px]">
-                AI for legal research is nice. AI for running your practice is
-                transformational. ClaudeFirm handles intake, billing, collections,
-                and client follow-up — with security architecture built
-                from the ground up.
+                ClaudeFirm runs entirely on Apple Silicon — MLX-quantized weights
+                in unified memory, Metal-accelerated attention, sub-200ms
+                first-token latency. No API keys. No rate limits. No round-trips
+                across someone else's network. Inference happens 20cm from
+                where you typed the prompt.
               </p>
             </FadeIn>
 
@@ -48,10 +57,15 @@ export default function Hero() {
               <div className="rounded-lg overflow-hidden border border-white/[0.08] shadow-2xl shadow-black/40">
                 {/* Header */}
                 <div className="bg-ink-light px-5 py-3.5 border-b border-white/[0.06]">
-                  <div className="flex items-center gap-2">
-                    <div className="w-2 h-2 rounded-full bg-green-500/80 animate-pulse" />
-                    <span className="font-display font-semibold text-[13px] text-white/70">
-                      Your Team
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div className="w-2 h-2 rounded-full bg-green-500/80 animate-pulse" />
+                      <span className="font-display font-semibold text-[13px] text-white/70">
+                        agents.local
+                      </span>
+                    </div>
+                    <span className="text-[10px] font-mono text-white/30 tracking-tight">
+                      mlx · M3 Pro · 18GB
                     </span>
                   </div>
                 </div>
@@ -84,9 +98,9 @@ export default function Hero() {
                 </div>
 
                 {/* Status bar */}
-                <div className="bg-ink-light px-5 py-2 text-[11px] text-white/20 font-body border-t border-white/[0.06] flex justify-between">
-                  <span>4 agents &middot; handles the 63%</span>
-                  <span className="text-green-500/50">Security from the ground up</span>
+                <div className="bg-ink-light px-5 py-2 text-[11px] text-white/30 font-mono border-t border-white/[0.06] flex justify-between">
+                  <span>4 procs &middot; 12.4GB resident</span>
+                  <span className="text-green-500/60">tok/s 64.2 &middot; ttft 184ms</span>
                 </div>
               </div>
             </FadeIn>

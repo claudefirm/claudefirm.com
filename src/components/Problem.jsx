@@ -10,20 +10,21 @@ export default function Problem() {
         <div className="lg:col-span-5">
           <FadeIn>
             <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight text-gray-900">
-              The 63% problem.
+              You bought a supercomputer.
               <br />
-              <span className="text-slate">Where your week actually goes.</span>
+              <span className="text-slate">Then you rented one too.</span>
             </h2>
           </FadeIn>
           <FadeIn delay={100}>
             <div className="mt-8 pl-5 border-l-2 border-brass/40">
               <p className="text-slate italic text-lg leading-relaxed">
-                The average small firm lawyer bills 37% of their working hours.
-                The other 63% is intake calls, invoice follow-ups, calendar
-                management, and the same 8 questions every new client asks.
+                The M-series chip on your desk has more inference capacity
+                than most production AI deployments did three years ago.
+                The vendor in your browser tab is renting you back what
+                you already own — slower, metered, and across a network.
               </p>
               <p className="mt-3 text-[13px] text-brass-muted font-display font-semibold">
-                — Clio Legal Trends Report
+                — Apple Silicon performance note, MLX team
               </p>
             </div>
           </FadeIn>

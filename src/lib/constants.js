@@ -1,7 +1,7 @@
 import {
-  Clock, TrendingDown, BarChart3,
+  Cpu, Zap, WifiOff,
   Crown, UserPlus, Receipt, Megaphone,
-  Shield, Eye, FileCheck, Server,
+  HardDrive, Gauge, Layers, Terminal,
 } from 'lucide-react'
 
 export const NAV_ITEMS = [
@@ -14,22 +14,22 @@ export const NAV_ITEMS = [
 
 export const PAIN_POINTS = [
   {
-    icon: Clock,
-    stat: '6 hrs',
-    title: 'Average intake response time',
-    description: 'The lawyer who responds first gets the client 70% of the time. Not the best lawyer — the fastest one. You\'re losing clients every day because you called back 6 hours later and someone else called back in 45 minutes.',
+    icon: Cpu,
+    stat: '38 TOPS',
+    title: 'The Neural Engine sitting idle on your desk',
+    description: 'Your M3 Pro has the inference budget of a small datacenter — 38 trillion ops per second of dedicated AI silicon, plus 18-core GPU, plus unified memory the model can address directly. Most of it spends the workday rendering Slack notifications. ClaudeFirm runs your firm on the chip you already own.',
   },
   {
-    icon: TrendingDown,
-    stat: '15%',
-    title: 'Of your revenue disappears',
-    description: 'The average small firm collection rate is 85%. Not because clients won\'t pay — because you\'re in court at 9am and too tired to chase invoices at 4pm. You send a reminder next week. Then you forget. Then 90 days pass and now it\'s awkward.',
+    icon: Zap,
+    stat: '180ms',
+    title: 'First-token latency, no network in the path',
+    description: 'A round-trip to a frontier API is 600–2000ms before a single token comes back, on a good day. MLX inference on an M-series Mac returns the first token in under 200ms because the model weights are 20cm from the prompt. Your draft is half-written before a cloud model has finished its TLS handshake.',
   },
   {
-    icon: BarChart3,
-    stat: '100%',
-    title: 'Of small firms live the feast-or-famine cycle',
-    description: 'You get busy. You stop marketing. Pipeline dries up. Matters end. You panic. You start marketing again. The reason isn\'t that you\'re bad at marketing — it\'s that marketing is a daily activity and you\'re a full-time lawyer.',
+    icon: WifiOff,
+    stat: '0',
+    title: 'External dependencies in the critical path',
+    description: 'Court Wi-Fi flaky? Cloudflare having a Tuesday? OpenAI capacity-throttled at 4pm Pacific? None of it shows up in your day. The model is on the disk. The agent is on the chip. The work continues whether the rest of the internet does or not.',
   },
 ]
 
@@ -104,24 +104,24 @@ export const HOW_IT_WORKS_STEPS = [
 
 export const TRUST_POINTS = [
   {
-    icon: Eye,
-    title: 'The AI cannot send an email',
-    description: 'It can write one. It cannot send one. Every email, every invoice, every filing sits in a drafts queue until you read it and hit send. There is no autopilot mode. There is no "oops."',
+    icon: Layers,
+    title: 'MLX, not a wrapper around someone else\'s API',
+    description: 'Inference runs on Apple\'s MLX framework — quantized model weights, unified memory, Metal-accelerated attention. Not a thin client calling out to a vendor. The compute graph executes on the silicon you bought. We did the engineering so the model fits.',
   },
   {
-    icon: Shield,
-    title: 'Client A\'s files are locked away from Client B',
-    description: 'The agent working on the Johnson matter cannot see the Smith files. Period. Not "it probably won\'t" — it literally cannot. Separate locks, separate keys.',
+    icon: Gauge,
+    title: 'Throughput scales with your hardware, not your bill',
+    description: 'M2 Pro: ~32 tokens/sec on a 13B-class model. M3 Max: ~70. M4 Ultra: ~140. The faster the chip you put it on, the faster it goes — and you\'ve already paid for the chip. Cloud inference is a metered tap. Local inference is a hose.',
   },
   {
-    icon: FileCheck,
-    title: 'Everything the AI does is written down',
-    description: 'Every document it read. Every draft it wrote. Every action you approved. A complete paper trail. When the bar asks how you supervised your AI — and they will — you hand them the log.',
+    icon: HardDrive,
+    title: 'Weights on disk, not on a vendor\'s GPU rack',
+    description: 'Quantized 4-bit weights for the routing model: ~7GB. Embedding model: ~400MB. Tool-use model: ~9GB. They live in `~/Library/Application Support/ClaudeFirm/models/`. You can `ls` them. You can back them up. They don\'t expire because some Series-C startup ran out of runway.',
   },
   {
-    icon: Server,
-    title: 'Your data can stay in your office',
-    description: 'Run it on our cloud. Or run it on a computer in your office closet. If you don\'t want client data leaving your building, it doesn\'t leave your building. Your call.',
+    icon: Terminal,
+    title: 'Open instrumentation. No black box.',
+    description: 'Every prompt, every retrieval, every tool call writes to a structured log on disk. You can `tail -f` the agent\'s reasoning. You can grep the audit trail. There is no observability dashboard you have to email a sales rep to access — the system is already on a machine you control.',
   },
 ]
 
