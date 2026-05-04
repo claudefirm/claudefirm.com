@@ -10,20 +10,21 @@ export default function Problem() {
         <div className="lg:col-span-5">
           <FadeIn>
             <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight text-gray-900">
-              The 63% problem.
+              The cloud was never the deal.
               <br />
-              <span className="text-slate">Where your week actually goes.</span>
+              <span className="text-slate">It was the bill.</span>
             </h2>
           </FadeIn>
           <FadeIn delay={100}>
             <div className="mt-8 pl-5 border-l-2 border-brass/40">
               <p className="text-slate italic text-lg leading-relaxed">
-                The average small firm lawyer bills 37% of their working hours.
-                The other 63% is intake calls, invoice follow-ups, calendar
-                management, and the same 8 questions every new client asks.
+                Every "AI for legal" product on the market is a $200/seat/mo
+                wrapper around someone else's API, training on your data,
+                logged in someone else's auth system, deprecating on someone
+                else's schedule. You bought a practice. They sold you a tenancy.
               </p>
               <p className="mt-3 text-[13px] text-brass-muted font-display font-semibold">
-                — Clio Legal Trends Report
+                — Things you don't have to put up with
               </p>
             </div>
           </FadeIn>

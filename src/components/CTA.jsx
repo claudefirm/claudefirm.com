@@ -10,14 +10,14 @@ export default function CTA() {
       <div className="relative z-10 max-w-[640px] mx-auto px-6 py-24 md:py-32 text-center">
         <FadeIn>
           <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight">
-            The legal work is where your brain goes.
+            Stop renting your tools.
             <br />
-            <span className="text-brass">Everything else is where your systems go.</span>
+            <span className="text-brass">Own them again.</span>
           </h2>
           <p className="mt-5 text-slate-light text-lg leading-relaxed">
-            The firms that figure this out in the next 12 months won't just survive.
-            They'll run practices that look nothing like small-firm practice has
-            looked for the past 30 years.
+            One install. No subscription. No telemetry. No login. The model
+            runs on your hardware, the data stays on your disk, and the
+            workflow keeps working whether or not we do.
           </p>
         </FadeIn>
 

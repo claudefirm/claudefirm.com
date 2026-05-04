@@ -1,7 +1,7 @@
 import {
-  Clock, TrendingDown, BarChart3,
+  Unplug, DollarSign, Lock,
   Crown, UserPlus, Receipt, Megaphone,
-  Shield, Eye, FileCheck, Server,
+  Key, EyeOff, Archive, Hammer,
 } from 'lucide-react'
 
 export const NAV_ITEMS = [
@@ -14,22 +14,22 @@ export const NAV_ITEMS = [
 
 export const PAIN_POINTS = [
   {
-    icon: Clock,
-    stat: '6 hrs',
-    title: 'Average intake response time',
-    description: 'The lawyer who responds first gets the client 70% of the time. Not the best lawyer — the fastest one. You\'re losing clients every day because you called back 6 hours later and someone else called back in 45 minutes.',
+    icon: DollarSign,
+    stat: '$0/mo',
+    title: 'What inference should cost after you bought the hardware',
+    description: 'You already paid for the laptop. You already paid for the electricity. The "AI tax" — $20/seat/month, $200/seat/month, per-token surcharges, "enterprise" pricing — is rent extracted on top of compute you already own. Nobody charges you a monthly fee to run Word.',
   },
   {
-    icon: TrendingDown,
-    stat: '15%',
-    title: 'Of your revenue disappears',
-    description: 'The average small firm collection rate is 85%. Not because clients won\'t pay — because you\'re in court at 9am and too tired to chase invoices at 4pm. You send a reminder next week. Then you forget. Then 90 days pass and now it\'s awkward.',
+    icon: Unplug,
+    stat: '14 days',
+    title: 'Notice you get when a vendor decides to deprecate your stack',
+    description: 'Your workflow depends on a model. The vendor sunsets the model. Your prompts stop returning the same outputs. Your firm\'s habits — built over 18 months — are now a research project. And there is nothing in your contract that prevents this from happening again next quarter.',
   },
   {
-    icon: BarChart3,
-    stat: '100%',
-    title: 'Of small firms live the feast-or-famine cycle',
-    description: 'You get busy. You stop marketing. Pipeline dries up. Matters end. You panic. You start marketing again. The reason isn\'t that you\'re bad at marketing — it\'s that marketing is a daily activity and you\'re a full-time lawyer.',
+    icon: EyeOff,
+    stat: '$0',
+    title: 'What you get paid for the data you give them',
+    description: 'Every prompt you send to a hosted model trains some part of someone\'s next product, refines someone\'s reinforcement learning loop, sharpens someone\'s competitive moat. Your client work is the unpaid intern of a $300B industry. The opt-out toggle is a courtesy, not a guarantee.',
   },
 ]
 
@@ -104,24 +104,24 @@ export const HOW_IT_WORKS_STEPS = [
 
 export const TRUST_POINTS = [
   {
-    icon: Eye,
-    title: 'The AI cannot send an email',
-    description: 'It can write one. It cannot send one. Every email, every invoice, every filing sits in a drafts queue until you read it and hit send. There is no autopilot mode. There is no "oops."',
+    icon: Hammer,
+    title: 'You own the install. Forever.',
+    description: 'One-time license. The binary lives on your disk. The model weights live on your disk. The configuration lives on your disk. Cancel us tomorrow and the software keeps running — same as Photoshop CS6 keeps running, same as your 2009 copy of Word keeps running. Software you bought, not software you rented.',
   },
   {
-    icon: Shield,
-    title: 'Client A\'s files are locked away from Client B',
-    description: 'The agent working on the Johnson matter cannot see the Smith files. Period. Not "it probably won\'t" — it literally cannot. Separate locks, separate keys.',
+    icon: EyeOff,
+    title: 'No telemetry. No phone-home. No "anonymized analytics."',
+    description: 'There is no "we collect aggregate usage data to improve the product" footnote. The product does not call out. The agents do not report. Run a packet capture on your own router and verify it. We expect you to.',
   },
   {
-    icon: FileCheck,
-    title: 'Everything the AI does is written down',
-    description: 'Every document it read. Every draft it wrote. Every action you approved. A complete paper trail. When the bar asks how you supervised your AI — and they will — you hand them the log.',
+    icon: Archive,
+    title: 'No platform risk',
+    description: 'Your firm runs on a stack. The stack should not be able to disappear because someone in San Francisco missed a fundraising round. Local install + local weights + local data = a workflow that survives every cycle of vendor consolidation, acquisition, pivot, and shutdown that the next decade will produce.',
   },
   {
-    icon: Server,
-    title: 'Your data can stay in your office',
-    description: 'Run it on our cloud. Or run it on a computer in your office closet. If you don\'t want client data leaving your building, it doesn\'t leave your building. Your call.',
+    icon: Key,
+    title: 'No accounts. No SSO. No "log in to continue."',
+    description: 'There is no central system you authenticate against. There is no token that expires. There is no admin who can lock you out. The software runs because you launched it. The data is yours because it never went anywhere else.',
   },
 ]
 

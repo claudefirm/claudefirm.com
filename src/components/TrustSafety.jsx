@@ -20,19 +20,20 @@ export default function TrustSafety() {
           <div className="flex items-center gap-3 mb-6">
             <ShieldCheck className="w-6 h-6 text-brass" />
             <span className="font-display font-semibold text-brass text-[13px] tracking-widest uppercase">
-              Trust & Safety
+              The Deal
             </span>
           </div>
           <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight max-w-xl">
-            Your client data is safe.{' '}
+            Software you bought.{' '}
             <br />
-            Here's exactly how.
+            Not software you rent.
           </h2>
           <p className="mt-5 text-slate-light text-lg leading-relaxed max-w-[540px]">
-            You're already using ChatGPT or something like it. You know
-            you probably shouldn't be pasting client information into it.
-            ClaudeFirm was built from day one to handle privileged
-            information — by a security engineer, not a startup.
+            The last decade convinced an entire industry that paying rent
+            forever was the natural order of things. It is not. ClaudeFirm
+            ships as a thing you install, on a machine you own, doing work
+            on data nobody else gets to touch. That used to be how most
+            software worked. We made that again.
           </p>
         </FadeIn>
 
@@ -55,12 +56,13 @@ export default function TrustSafety() {
         <FadeIn delay={400}>
           <div className="mt-14 pl-6 border-l-2 border-brass/30 max-w-xl">
             <p className="text-slate-light text-[15px] italic leading-relaxed">
-              "Would you hand a first-day temp your entire client list, every
-              privileged communication, and the ability to send emails on your
-              behalf? That's what most AI tools ask you to do."
+              "If your livelihood depends on a piece of software, the
+              software should not depend on someone else's ability to
+              keep their company alive. That used to be obvious. Then we
+              all signed up for the cloud and forgot."
             </p>
             <p className="mt-3 font-display font-semibold text-brass text-sm">
-              ClaudeFirm doesn't. Every permission is earned, every action is supervised.
+              We are unforgetting it. Software you can outlive.
             </p>
           </div>
         </FadeIn>
