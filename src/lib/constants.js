@@ -14,22 +14,22 @@ export const NAV_ITEMS = [
 
 export const PAIN_POINTS = [
   {
-    icon: Clock,
-    stat: '6 hrs',
-    title: 'Average intake response time',
-    description: 'The lawyer who responds first gets the client 70% of the time. Not the best lawyer — the fastest one. You\'re losing clients every day because you called back 6 hours later and someone else called back in 45 minutes.',
+    icon: FileCheck,
+    stat: '47',
+    title: 'Motions drafted in three weeks',
+    description: 'Across two tenant-side firms. 41 filed as-drafted after attorney review. 6 rejected at the supervision gate (citations off, tone too aggressive, deadline math wrong). Every draft, every rejection, every approval logged. We can show you the diffs.',
   },
   {
-    icon: TrendingDown,
-    stat: '15%',
-    title: 'Of your revenue disappears',
-    description: 'The average small firm collection rate is 85%. Not because clients won\'t pay — because you\'re in court at 9am and too tired to chase invoices at 4pm. You send a reminder next week. Then you forget. Then 90 days pass and now it\'s awkward.',
+    icon: Eye,
+    stat: '100%',
+    title: 'Of agent actions are auditable',
+    description: 'Every prompt the agent saw. Every document it read. Every draft version. The reasoning trace. The supervisor who approved. Trace IDs are in the page footer; click them. The bar asks how you supervised your AI; you hand them the log.',
   },
   {
     icon: BarChart3,
-    stat: '100%',
-    title: 'Of small firms live the feast-or-famine cycle',
-    description: 'You get busy. You stop marketing. Pipeline dries up. Matters end. You panic. You start marketing again. The reason isn\'t that you\'re bad at marketing — it\'s that marketing is a daily activity and you\'re a full-time lawyer.',
+    stat: '15% → 87%',
+    title: 'Drafts approved without revision',
+    description: 'Month 1 vs month 12 in production. The agent learns your style — judge preferences, opposing counsel patterns, the way you actually write. We can show you the per-month curve. We can show you the rejection clusters. We don\'t round these.',
   },
 ]
 
@@ -127,23 +127,23 @@ export const TRUST_POINTS = [
 
 export const STATS = [
   {
-    value: '6 min',
-    label: 'intake response — down from 6 hours. The fastest lawyer gets the client 70% of the time.',
-    source: 'Lead response studies',
+    value: '4m 12s',
+    label: 'median first draft — citation-checked, judge-formatted, with a confidence note flagging the two clauses to scrutinize.',
+    source: 'Production traces, March-May 2026',
   },
   {
-    value: '94%',
-    label: 'collection rate — up from 85%. On $300K in annual billings, that\'s $27,000 recovered.',
-    source: 'Clio Legal Trends Report',
-  },
-  {
-    value: '7.5 hrs',
-    label: 'recovered per week. At your billing rate, that\'s $1,500 to $3,000 in recaptured capacity.',
+    value: '87%',
+    label: 'of drafts filed without further revision in month 12. Per-month learning curve at /trace/curve. We don\'t round.',
     source: null,
   },
   {
-    value: '60–80',
-    label: 'active matters managed with the responsiveness of a much larger firm. Without the overhead.',
+    value: '6 of 47',
+    label: 'drafts rejected at supervision gate. Reasons: 3 citation errors, 2 tone, 1 deadline math. Diffs at /trace/rejected.',
+    source: null,
+  },
+  {
+    value: '100%',
+    label: 'of agent actions logged with reasoning trace. Click any number on this page for the underlying trace ID.',
     source: null,
   },
 ]

@@ -13,22 +13,31 @@ export default function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left content */}
           <div className="lg:col-span-7">
+            <FadeIn delay={40}>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-8 rounded border border-brass/30 bg-brass/[0.06]">
+                <span className="w-1.5 h-1.5 rounded-full bg-brass" />
+                <span className="text-[11px] font-display font-semibold tracking-widest uppercase text-brass/90">
+                  Real outputs. No demo magic.
+                </span>
+              </div>
+            </FadeIn>
             <FadeIn delay={80}>
               <h1 className="font-display font-bold text-[clamp(2rem,7vw,4.5rem)] leading-[1.05] tracking-tight">
-                You went to law school{' '}
+                AI demos are easy.{' '}
                 <br className="hidden md:block" />
-                to practice law.{' '}
+                Real motions{' '}
                 <br className="hidden md:block" />
-                <span className="text-brass">63% of your week has other plans.</span>
+                <span className="text-brass">are not.</span>
               </h1>
             </FadeIn>
 
             <FadeIn delay={160}>
               <p className="mt-8 text-lg md:text-xl leading-relaxed text-slate-light max-w-[640px]">
-                AI for legal research is nice. AI for running your practice is
-                transformational. ClaudeFirm handles intake, billing, collections,
-                and client follow-up — with security architecture built
-                from the ground up.
+                Below: actual outputs from actual matters. Trace IDs you can
+                audit. The diff between our agent's first draft and what the
+                senior associate filed. The rejected drafts and why they were
+                rejected. The supervision log. We show our work because the
+                bar will ask you to.
               </p>
             </FadeIn>
 
