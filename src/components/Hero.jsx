@@ -13,22 +13,30 @@ export default function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left content */}
           <div className="lg:col-span-7">
+            <FadeIn delay={40}>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-8 rounded border border-brass/30 bg-brass/[0.06]">
+                <span className="w-1.5 h-1.5 rounded-full bg-brass" />
+                <span className="text-[11px] font-display font-semibold tracking-widest uppercase text-brass/90">
+                  Local-only. No cloud round-trips.
+                </span>
+              </div>
+            </FadeIn>
             <FadeIn delay={80}>
               <h1 className="font-display font-bold text-[clamp(2rem,7vw,4.5rem)] leading-[1.05] tracking-tight">
-                You went to law school{' '}
+                Attorney–client privilege{' '}
                 <br className="hidden md:block" />
-                to practice law.{' '}
+                shouldn't require{' '}
                 <br className="hidden md:block" />
-                <span className="text-brass">63% of your week has other plans.</span>
+                <span className="text-brass">a cloud vendor's promise.</span>
               </h1>
             </FadeIn>
 
             <FadeIn delay={160}>
               <p className="mt-8 text-lg md:text-xl leading-relaxed text-slate-light max-w-[640px]">
-                AI for legal research is nice. AI for running your practice is
-                transformational. ClaudeFirm handles intake, billing, collections,
-                and client follow-up — with security architecture built
-                from the ground up.
+                ClaudeFirm runs on the Mac on your desk. Inference happens on
+                your M-series chip. Client data never leaves the building, never
+                touches a third-party server, and never lands in a vendor BAA
+                you have to renegotiate every renewal cycle.
               </p>
             </FadeIn>
 
@@ -85,8 +93,8 @@ export default function Hero() {
 
                 {/* Status bar */}
                 <div className="bg-ink-light px-5 py-2 text-[11px] text-white/20 font-body border-t border-white/[0.06] flex justify-between">
-                  <span>4 agents &middot; handles the 63%</span>
-                  <span className="text-green-500/50">Security from the ground up</span>
+                  <span>4 agents &middot; running on your Mac</span>
+                  <span className="text-green-500/50">0 outbound network calls</span>
                 </div>
               </div>
             </FadeIn>

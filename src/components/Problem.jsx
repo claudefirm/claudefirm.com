@@ -10,20 +10,21 @@ export default function Problem() {
         <div className="lg:col-span-5">
           <FadeIn>
             <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight text-gray-900">
-              The 63% problem.
+              The data goes somewhere.
               <br />
-              <span className="text-slate">Where your week actually goes.</span>
+              <span className="text-slate">The question is where.</span>
             </h2>
           </FadeIn>
           <FadeIn delay={100}>
             <div className="mt-8 pl-5 border-l-2 border-brass/40">
               <p className="text-slate italic text-lg leading-relaxed">
-                The average small firm lawyer bills 37% of their working hours.
-                The other 63% is intake calls, invoice follow-ups, calendar
-                management, and the same 8 questions every new client asks.
+                Every minute your firm uses a cloud AI tool, privileged
+                client information moves across a network you don't control,
+                into a system you can't audit, governed by a contract drafted
+                by the vendor's lawyers — not yours.
               </p>
               <p className="mt-3 text-[13px] text-brass-muted font-display font-semibold">
-                — Clio Legal Trends Report
+                — ABA Formal Opinion 512 (2024)
               </p>
             </div>
           </FadeIn>

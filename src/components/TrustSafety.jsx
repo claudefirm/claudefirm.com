@@ -24,15 +24,16 @@ export default function TrustSafety() {
             </span>
           </div>
           <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight max-w-xl">
-            Your client data is safe.{' '}
+            Privilege is a one-way door.{' '}
             <br />
-            Here's exactly how.
+            ClaudeFirm doesn't open it.
           </h2>
-          <p className="mt-5 text-slate-light text-lg leading-relaxed max-w-[540px]">
-            You're already using ChatGPT or something like it. You know
-            you probably shouldn't be pasting client information into it.
-            ClaudeFirm was built from day one to handle privileged
-            information — by a security engineer, not a startup.
+          <p className="mt-5 text-slate-light text-lg leading-relaxed max-w-[560px]">
+            ABA Model Rule 1.6 is not a posture. Once a privileged
+            communication crosses a third-party server, you have to argue
+            that it didn't waive privilege. ClaudeFirm runs entirely on
+            the Mac in your office. Inference happens locally. There is no
+            third party to argue about.
           </p>
         </FadeIn>
 
@@ -55,12 +56,14 @@ export default function TrustSafety() {
         <FadeIn delay={400}>
           <div className="mt-14 pl-6 border-l-2 border-brass/30 max-w-xl">
             <p className="text-slate-light text-[15px] italic leading-relaxed">
-              "Would you hand a first-day temp your entire client list, every
-              privileged communication, and the ability to send emails on your
-              behalf? That's what most AI tools ask you to do."
+              "Every cloud AI vendor says they're 'enterprise-grade.' Then
+              you read the BAA, find the carve-outs for training data, the
+              sub-processor list, the breach-notification window, and the
+              limitation-of-liability clause that caps damages at last
+              month's invoice."
             </p>
             <p className="mt-3 font-display font-semibold text-brass text-sm">
-              ClaudeFirm doesn't. Every permission is earned, every action is supervised.
+              ClaudeFirm has no BAA because there is no third party to BAA with.
             </p>
           </div>
         </FadeIn>

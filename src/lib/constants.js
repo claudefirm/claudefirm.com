@@ -14,22 +14,22 @@ export const NAV_ITEMS = [
 
 export const PAIN_POINTS = [
   {
-    icon: Clock,
-    stat: '6 hrs',
-    title: 'Average intake response time',
-    description: 'The lawyer who responds first gets the client 70% of the time. Not the best lawyer — the fastest one. You\'re losing clients every day because you called back 6 hours later and someone else called back in 45 minutes.',
+    icon: Shield,
+    stat: '0',
+    title: 'Cloud AI vendors that have never had an incident',
+    description: 'Every major LLM provider has had at least one disclosed data exposure or training-data leak in the past 24 months. The AI industry is still figuring out the basics of confidentiality. Your privileged client communications should not be the test data.',
   },
   {
-    icon: TrendingDown,
-    stat: '15%',
-    title: 'Of your revenue disappears',
-    description: 'The average small firm collection rate is 85%. Not because clients won\'t pay — because you\'re in court at 9am and too tired to chase invoices at 4pm. You send a reminder next week. Then you forget. Then 90 days pass and now it\'s awkward.',
+    icon: FileCheck,
+    stat: '83%',
+    title: 'Of state bar opinions on AI cite confidentiality',
+    description: 'Florida, California, New York, Texas — the bar opinions all converge on the same point: you have to know where the data goes. With cloud AI, the answer is "into the vendor\'s pipeline, governed by a BAA you didn\'t draft." With local AI, the answer is "nowhere."',
   },
   {
-    icon: BarChart3,
-    stat: '100%',
-    title: 'Of small firms live the feast-or-famine cycle',
-    description: 'You get busy. You stop marketing. Pipeline dries up. Matters end. You panic. You start marketing again. The reason isn\'t that you\'re bad at marketing — it\'s that marketing is a daily activity and you\'re a full-time lawyer.',
+    icon: Server,
+    stat: '1',
+    title: 'Place your client data lives. The Mac on your desk.',
+    description: 'No staging environment. No model-training opt-out checkbox you have to remember to tick. No vendor breach you read about in the WSJ six months later. The hardware is in the room. The data stays in the room.',
   },
 ]
 
@@ -104,24 +104,24 @@ export const HOW_IT_WORKS_STEPS = [
 
 export const TRUST_POINTS = [
   {
-    icon: Eye,
-    title: 'The AI cannot send an email',
-    description: 'It can write one. It cannot send one. Every email, every invoice, every filing sits in a drafts queue until you read it and hit send. There is no autopilot mode. There is no "oops."',
+    icon: Server,
+    title: 'Inference is local. Always.',
+    description: 'Every prompt, every retrieval, every draft is processed on the Mac in your office. The model weights live on disk. There is no API call to a vendor. There is no fallback path that quietly routes to the cloud when the local model is busy.',
   },
   {
     icon: Shield,
-    title: 'Client A\'s files are locked away from Client B',
-    description: 'The agent working on the Johnson matter cannot see the Smith files. Period. Not "it probably won\'t" — it literally cannot. Separate locks, separate keys.',
+    title: 'No BAA, because no third party',
+    description: 'HIPAA, GDPR, state privilege rules — all turn on whether a third party touched the data. None did. You don\'t need a Business Associate Agreement with a vendor that never receives client information. The compliance argument starts and ends at your office wall.',
+  },
+  {
+    icon: Eye,
+    title: 'Every action is approved by you',
+    description: 'The agent drafts. You review. You send. Nothing leaves the firm without an attorney signing off, in compliance with ABA Model Rule 5.3 on supervising nonlawyer assistants. There is no autopilot. There is no "oops."',
   },
   {
     icon: FileCheck,
-    title: 'Everything the AI does is written down',
-    description: 'Every document it read. Every draft it wrote. Every action you approved. A complete paper trail. When the bar asks how you supervised your AI — and they will — you hand them the log.',
-  },
-  {
-    icon: Server,
-    title: 'Your data can stay in your office',
-    description: 'Run it on our cloud. Or run it on a computer in your office closet. If you don\'t want client data leaving your building, it doesn\'t leave your building. Your call.',
+    title: 'Audit trail you can hand the bar',
+    description: 'Every document the agent read, every draft it produced, every approval you signed — written to an immutable log on disk. When opposing counsel asks how you supervised the AI on a privileged matter, you hand them the log. It runs locally too.',
   },
 ]
 
