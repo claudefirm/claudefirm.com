@@ -93,9 +93,9 @@ export default function Hero() {
                 </div>
 
                 {/* Status bar */}
-                <div className="bg-ink-light px-5 py-2 text-[11px] text-white/20 font-body border-t border-white/[0.06] flex justify-between">
-                  <span>4 agents &middot; handles the 63%</span>
-                  <span className="text-green-500/50">Security from the ground up</span>
+                <div className="bg-ink-light px-5 py-2 text-[11px] text-white/30 font-mono border-t border-white/[0.06] flex justify-between">
+                  <span>4 agents &middot; every action traced</span>
+                  <span className="text-green-500/60">audit log &middot; signed &middot; exportable</span>
                 </div>
               </div>
             </FadeIn>
