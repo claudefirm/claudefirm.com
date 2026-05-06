@@ -62,6 +62,7 @@ jobs:
           fetch-depth: 0   # need history to fetch other branches
 
       - name: Overlay variant source
+        id: overlay
         env:
           BRANCH: ${{ steps.vars.outputs.branch }}
         run: |
@@ -77,6 +78,10 @@ jobs:
             fi
           done
           git status --short
+          # Capture the variant's HEAD sha so the build-stamp reflects
+          # the content commit, not main's sha.
+          VARIANT_SHA=$(git rev-parse "origin/$BRANCH")
+          echo "variant_sha=$VARIANT_SHA" >> "$GITHUB_OUTPUT"
 
       # Login to zot via docker/login-action — same pattern claudefirm/platform's
       # build-preview workflow uses successfully. The ARC dind sidecar has
@@ -94,7 +99,9 @@ jobs:
         env:
           IMAGE: ${{ steps.vars.outputs.image }}
           BRANCH: ${{ steps.vars.outputs.branch }}
-          SHA: ${{ github.sha }}
+          # Use the VARIANT branch's HEAD sha (not main's) so .source-sha
+          # served by the deployed page tracks the content commit.
+          SHA: ${{ steps.overlay.outputs.variant_sha }}
         run: |
           set -euo pipefail
           docker build \
