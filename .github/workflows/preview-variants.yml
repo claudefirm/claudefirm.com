@@ -1,0 +1,98 @@
+name: Preview variants
+
+# Builds each variant-* branch on push and publishes the resulting dist/
+# tree to a `pages/<variant>` orphan branch. The fourslide cluster's
+# preview-server Deployment git-syncs those branches and serves them at
+# `<variant>-dev.foursli.de`, so the dev sites stay durable regardless of
+# whether the Coder dev workspaces are running. HOG keeps `pnpm dev` in
+# Coder for hot-reload iteration; this pipeline keeps the published
+# review surface alive after the workspace stops.
+
+on:
+  push:
+    branches:
+      - 'variant-*'
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Variant branch to (re)build'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+concurrency:
+  group: preview-variants-${{ github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Determine variant branch
+        id: vars
+        run: |
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            BRANCH="${{ inputs.branch }}"
+          else
+            BRANCH="${GITHUB_REF#refs/heads/}"
+          fi
+          case "$BRANCH" in
+            variant-*) ;;
+            *) echo "::error::branch '$BRANCH' is not a variant-* branch"; exit 1 ;;
+          esac
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          echo "pages_branch=pages/$BRANCH" >> "$GITHUB_OUTPUT"
+
+      - name: Checkout source
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ steps.vars.outputs.branch }}
+          fetch-depth: 1
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Build
+        # Vite serves dev with `base: "./"` for relative asset paths so the
+        # output works at any host. preview-server serves at the host root,
+        # so a relative base is correct for both contexts.
+        run: pnpm build
+
+      - name: Stash dist + commit info
+        run: |
+          set -euo pipefail
+          mv dist /tmp/dist
+          echo "${{ github.sha }}" > /tmp/dist/.source-sha
+          echo "${{ steps.vars.outputs.branch }}" > /tmp/dist/.source-branch
+          date -u +"%Y-%m-%dT%H:%M:%SZ" > /tmp/dist/.built-at
+          touch /tmp/dist/.nojekyll
+
+      - name: Publish to ${{ steps.vars.outputs.pages_branch }}
+        env:
+          PAGES_BRANCH: ${{ steps.vars.outputs.pages_branch }}
+          SRC_BRANCH: ${{ steps.vars.outputs.branch }}
+          SRC_SHA: ${{ github.sha }}
+        run: |
+          set -euo pipefail
+          git config user.email "preview-bot@foursli.de"
+          git config user.name  "preview-bot"
+          # Replace working tree with built dist
+          git checkout --orphan "$PAGES_BRANCH"
+          git rm -rf --quiet . || true
+          # Some files survive `git rm -rf` if they were untracked
+          find . -mindepth 1 -maxdepth 1 -not -name '.git' -exec rm -rf {} +
+          cp -a /tmp/dist/. .
+          git add -A
+          git commit -m "preview: $SRC_BRANCH @ ${SRC_SHA:0:8}" --allow-empty
+          git push origin "$PAGES_BRANCH" --force
