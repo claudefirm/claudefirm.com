@@ -104,51 +104,37 @@ jobs:
           SHA: ${{ steps.overlay.outputs.variant_sha }}
         run: |
           set -euo pipefail
+          # Tag strategy:
+          #   :<sha>                — full sha for traceability
+          #   :<commit-ts>-<short>  — numeric-sortable, watched by Flux
+          #                            ImagePolicy (filterTags pattern
+          #                            ^[0-9]+-[a-f0-9]+$, sort by ts
+          #                            ascending → highest = newest).
+          #   :latest               — convenience for ad-hoc curl. Knative
+          #                            does NOT pull this; ImageUpdateAutomation
+          #                            pins the digest into services.yaml.
+          SHORT="${SHA:0:8}"
+          # Commit timestamp from the variant's HEAD (Unix epoch).
+          COMMIT_TS=$(git log -1 --format=%ct "origin/$BRANCH")
+          POLICY_TAG="${COMMIT_TS}-${SHORT}"
           docker build \
             --build-arg "SOURCE_SHA=$SHA" \
             --build-arg "SOURCE_BRANCH=$BRANCH" \
             --tag "$IMAGE:$SHA" \
+            --tag "$IMAGE:$POLICY_TAG" \
             --tag "$IMAGE:latest" \
             .
           docker push "$IMAGE:$SHA"
+          docker push "$IMAGE:$POLICY_TAG"
           docker push "$IMAGE:latest"
-          echo "::notice::pushed $IMAGE:$SHA and $IMAGE:latest"
+          echo "::notice::pushed $IMAGE:$POLICY_TAG (Flux-tracked) + :$SHA + :latest"
 
-      # Force the Knative ksvc to roll into the new image. Knative
-      # resolves `:latest` to a digest at admission and pins, so a
-      # second push of `:latest` doesn't auto-roll. We bump
-      # `spec.template.metadata.annotations.preview.foursli.de/last-build`
-      # which is a spec change and triggers a new Revision.
-      #
-      # Auth: the runner pod's SA
-      # `arc-runners-claudefirm-gha-rs-no-permission` is bound to a
-      # narrow Role in fourslide ns (verbs: patch on the four variant
-      # ksvc by name; see fourslide-co deploy/dev-sites/runner-rbac.yaml).
-      - name: Roll Knative ksvc to the new revision
-        env:
-          BRANCH: ${{ steps.vars.outputs.branch }}
-          SHA: ${{ steps.overlay.outputs.variant_sha }}
-        run: |
-          set -euo pipefail
-          K_TOKEN_FILE=/var/run/secrets/kubernetes.io/serviceaccount/token
-          K_CA=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
-          if [ ! -f "$K_TOKEN_FILE" ] || [ ! -f "$K_CA" ]; then
-            echo "::warning::no in-cluster SA token mounted; skipping Knative roll. Manually bump ksvc annotation."
-            exit 0
-          fi
-          K_TOKEN=$(cat "$K_TOKEN_FILE")
-          # In-cluster API: kubernetes.default.svc resolves cluster-internally
-          API=https://kubernetes.default.svc
-          PATCH=$(printf '{"spec":{"template":{"metadata":{"annotations":{"preview.foursli.de/last-build":"ci-%s-%s"}}}}}' "${SHA:0:8}" "$(date +%s)")
-          status=$(curl -fsS --cacert "$K_CA" \
-            -H "Authorization: Bearer $K_TOKEN" \
-            -H "Content-Type: application/merge-patch+json" \
-            -X PATCH \
-            "$API/apis/serving.knative.dev/v1/namespaces/fourslide/services/$BRANCH" \
-            --data-binary "$PATCH" \
-            -o /tmp/patch.json -w '%{http_code}') || {
-              echo "::error::PATCH failed: HTTP $status"
-              cat /tmp/patch.json
-              exit 1
-            }
-          echo "::notice::ksvc/$BRANCH rolled (HTTP $status). New revision will be ready in ~10-30s."
+      # No CI-side Knative roll. Flux ImageUpdateAutomation
+      # (fourslide-co deploy/dev-sites/image-automation.yaml) watches the
+      # zot registry, picks the highest <ts>-<sha> tag via ImagePolicy,
+      # writes it into services.yaml at the `# {"$imagepolicy": ...}`
+      # markers, commits to fourslide/fourslide main. Flux reconciles
+      # the resulting spec change, Knative creates a new Revision, the
+      # pod pulls the new digest. Total lag: ~1-2 min from push to live.
+      - name: Done
+        run: echo "image pushed; Flux ImageUpdateAutomation will pin the digest into the ksvc within ~1 min"
