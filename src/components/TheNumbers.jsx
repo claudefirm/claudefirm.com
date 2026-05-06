@@ -10,8 +10,8 @@ export default function TheNumbers() {
           The Numbers
         </p>
         <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight text-gray-900 max-w-xl">
-          This is not a technology argument.{' '}
-          <span className="text-slate">It's a math argument.</span>
+          What leaves the building.{' '}
+          <span className="text-slate">And what doesn&rsquo;t.</span>
         </h2>
       </FadeIn>
 

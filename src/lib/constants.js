@@ -1,35 +1,35 @@
 import {
-  Clock, TrendingDown, BarChart3,
+  Cpu, Lock, FileCheck,
   Crown, UserPlus, Receipt, Megaphone,
-  Shield, Eye, FileCheck, Server,
+  Shield, Eye, Server,
 } from 'lucide-react'
 
 export const NAV_ITEMS = [
-  { label: 'The Problem', href: '#problem' },
+  { label: 'On-Device', href: '#problem' },
   { label: 'Your Team', href: '#team' },
   { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Security', href: '#trust' },
+  { label: 'Safeguards', href: '#trust' },
   { label: 'FAQ', href: '#faq' },
 ]
 
 export const PAIN_POINTS = [
   {
+    icon: Cpu,
+    stat: 'Mac',
+    title: 'Client work runs on the lawyer\'s machine',
+    description: 'Intake, billing, conflict checks, document review — the agent does this work locally on the partner\'s Mac. The data never leaves the building for the things that don\'t need a cloud model.',
+  },
+  {
+    icon: Lock,
+    stat: 'Strip',
+    title: 'Identifying info stripped before any cloud call',
+    description: 'When a cloud model is the right tool for a step, names, numbers, and matter identifiers are replaced on-device with placeholders before the prompt leaves. The partner sees and approves the redacted prompt. The cloud model never sees the original.',
+  },
+  {
     icon: FileCheck,
-    stat: '47',
-    title: 'Motions drafted in three weeks',
-    description: 'Across two tenant-side firms. 41 filed as-drafted after attorney review. 6 rejected at the supervision gate (citations off, tone too aggressive, deadline math wrong). Every draft, every rejection, every approval logged. We can show you the diffs.',
-  },
-  {
-    icon: Eye,
-    stat: '100%',
-    title: 'Of agent actions are auditable',
-    description: 'Every prompt the agent saw. Every document it read. Every draft version. The reasoning trace. The supervisor who approved. Trace IDs are in the page footer; click them. The bar asks how you supervised your AI; you hand them the log.',
-  },
-  {
-    icon: BarChart3,
-    stat: '15% → 87%',
-    title: 'Drafts approved without revision',
-    description: 'Month 1 vs month 12 in production. The agent learns your style — judge preferences, opposing counsel patterns, the way you actually write. We can show you the per-month curve. We can show you the rejection clusters. We don\'t round these.',
+    stat: 'Log',
+    title: 'Every step is on the record',
+    description: 'Every prompt sent, every document read, every approval granted is logged with a trace ID. The disciplinary committee asks how you supervised your AI; you hand them the export.',
   },
 ]
 
@@ -39,142 +39,152 @@ export const TEAM_MEMBERS = [
     role: 'Head Partner',
     description: 'Operations, scheduling, matter management',
     tasks: [
-      'Daily deadline briefs with red/yellow/green flags',
-      'Inbox triage and priority routing to you',
-      'Calendar management and conflict checking',
+      'Daily deadline brief with judgment calls flagged before they fire',
+      'Inbox triage that surfaces the three things that actually need your eyes',
+      'Calendar coordination and conflict checking so you don\'t double-book',
     ],
-    autonomy: 'Board review',
-    autonomyDescription: 'Reports directly to you. Escalates all judgment calls.',
+    autonomy: 'Local',
+    autonomyDescription: 'Runs on your Mac. Reports to you. Escalates judgment calls before acting.',
   },
   {
     icon: UserPlus,
     role: 'Intake Agent',
-    description: 'Lead response, scheduling, onboarding',
+    description: 'Triage, conflict check, consult booking',
     tasks: [
-      'Personalized response in minutes — references what the client actually described',
-      'Consultation scheduling with pre-call questionnaire',
-      'One-page client summary prepared before your call',
+      'Reads the incoming PDF on your machine; nothing leaves before you approve',
+      'Drafts the engagement letter locally with the actual matter\'s details',
+      'Prepares a one-page summary before the call, not after',
     ],
-    autonomy: 'Auto + review',
-    autonomyDescription: 'Responds immediately. You review before consultations.',
+    autonomy: 'Local + approval-gated',
+    autonomyDescription: 'Drafts on-device. Nothing reaches a prospect without your sign-off.',
   },
   {
     icon: Receipt,
     role: 'Billing Agent',
-    description: 'Invoicing, collections, time capture',
+    description: 'Time capture, narrative drafting, collections',
     tasks: [
-      'Same-day time entries with professional narratives',
-      'Automated follow-up sequence at 7, 14, and 21 days — each personalized',
-      'Collection rate tracking and receivables dashboard',
+      'Drafts billable-hour entries from your calendar and mail edits — locally',
+      'Writes narratives in your phrasing; the model sees redacted matter labels',
+      'Sends follow-ups on aged invoices in your voice, after you approve',
     ],
-    autonomy: 'Draft only',
-    autonomyDescription: 'Drafts in your voice. You approve every send.',
+    autonomy: 'Local + approval-gated',
+    autonomyDescription: 'Drafts on-device. You approve every send.',
   },
   {
     icon: Megaphone,
-    role: 'Marketing Agent',
-    description: 'Pipeline, referrals, client retention',
+    role: 'Practice Agent',
+    description: 'Document drafting, discovery review, marketing',
     tasks: [
-      'Monthly personal check-ins with past clients — not a newsletter',
-      'Weekly LinkedIn posts drafted from your insights',
-      'Quarterly referral source follow-ups',
+      'Drafts from templates with citations the agent verifies before showing you',
+      'Sorts incoming discovery on your machine with privilege flags and a privilege log',
+      'Drafts referral check-ins that don\'t sound like a newsletter',
     ],
-    autonomy: 'Draft only',
-    autonomyDescription: 'Drafts everything. Nothing sends without you.',
+    autonomy: 'Local + approval-gated',
+    autonomyDescription: 'Drafts on-device. You sign before anything leaves the firm.',
   },
 ]
 
 export const HOW_IT_WORKS_STEPS = [
   {
     number: '01',
-    title: 'Tell it how you run your practice',
-    description: 'Set up agents the way you\'d set up employees — by role, with clear permissions, your tone of voice, and your processes. In plain English, not code.',
+    title: 'The agent runs on your Mac',
+    description: 'Install on the partner\'s machine. Client documents are processed locally. Matter data lives in a per-matter encrypted workspace, not in someone else\'s database.',
   },
   {
     number: '02',
-    title: 'Agents handle the 63%',
-    description: 'Intake responses go out in minutes. Invoices get followed up on schedule. Past clients hear from you regularly. The admin work happens without you touching it.',
+    title: 'Cloud calls are explicit, redacted, and approved',
+    description: 'When a step genuinely needs a frontier cloud model, identifying information is replaced with placeholders on-device. You see the redacted prompt before it leaves. The cloud model never sees client identifiers, and never trains on your data.',
   },
   {
     number: '03',
-    title: 'You practice law',
-    description: 'Nothing leaves the firm without your sign-off. Every draft sounds like you wrote it. Every action is logged. You just got 90 minutes back in your day.',
+    title: 'Every step is logged for the bar',
+    description: 'Trace IDs on every action. Exportable supervision log. The conversation with your IT person and the bar disciplinary committee is short because the answer to "what left the firm" is on a screen.',
   },
 ]
 
 export const TRUST_POINTS = [
   {
-    icon: Eye,
-    title: 'The AI cannot send an email',
-    description: 'It can write one. It cannot send one. Every email, every invoice, every filing sits in a drafts queue until you read it and hit send. There is no autopilot mode. There is no "oops."',
+    icon: Cpu,
+    title: 'Local-first, not cloud-first',
+    description: 'The default for client work is on-device. Cloud is a deliberate, redacted, approved escalation — not the path of least resistance.',
   },
   {
     icon: Shield,
-    title: 'Client A\'s files are locked away from Client B',
-    description: 'The agent working on the Johnson matter cannot see the Smith files. Period. Not "it probably won\'t" — it literally cannot. Separate locks, separate keys.',
+    title: 'No training on your data',
+    description: 'Contractual no-training term with every model provider used in a redacted call. The data we send is already redacted, and the contract is on file.',
+  },
+  {
+    icon: Lock,
+    title: 'Per-matter cryptographic isolation',
+    description: 'The agent working on Acme matters cannot read Smith files. Each matter has its own workspace and its own keys, on the same machine.',
+  },
+  {
+    icon: Eye,
+    title: 'Approval-gated by design',
+    description: 'No autopilot. Every email, filing, and follow-up sits in a drafts queue until the partner reads and approves it. There is no path that bypasses the gate.',
   },
   {
     icon: FileCheck,
-    title: 'Everything the AI does is written down',
-    description: 'Every document it read. Every draft it wrote. Every action you approved. A complete paper trail. When the bar asks how you supervised your AI — and they will — you hand them the log.',
+    title: 'Complete supervision log',
+    description: 'Every prompt, every document read, every draft, every approval. Exportable. The bar will ask; the answer is the file.',
   },
   {
     icon: Server,
-    title: 'Your data can stay in your office',
-    description: 'Run it on our cloud. Or run it on a computer in your office closet. If you don\'t want client data leaving your building, it doesn\'t leave your building. Your call.',
+    title: 'No telemetry on client material',
+    description: 'We don\'t collect prompts. We don\'t collect outputs. We don\'t collect document contents. We log usage metadata to a degree the partner controls.',
   },
 ]
 
 export const STATS = [
   {
-    value: '4m 12s',
-    label: 'median first draft — citation-checked, judge-formatted, with a confidence note flagging the two clauses to scrutinize.',
-    source: 'Production traces, March-May 2026',
+    value: 'On-device',
+    label: 'is the default for client work. Intake, billing, conflict checks, document review run on the partner\'s Mac without leaving the firm.',
+    source: 'Vision doc §7C, On-Device / Off-the-Record',
   },
   {
-    value: '87%',
-    label: 'of drafts filed without further revision in month 12. Per-month learning curve at /trace/curve. We don\'t round.',
-    source: null,
+    value: 'Redacted',
+    label: 'before any cloud call. Names, numbers, and matter identifiers are replaced on-device. The partner approves the redacted prompt before it leaves.',
+    source: 'Vision doc §4, technical moat',
   },
   {
-    value: '6 of 47',
-    label: 'drafts rejected at supervision gate. Reasons: 3 citation errors, 2 tone, 1 deadline math. Diffs at /trace/rejected.',
-    source: null,
+    value: 'No training',
+    label: 'on your firm\'s data. Contractual term with every cloud provider used in a redacted call. The contract is on file.',
+    source: 'Vision doc §11, deliverables',
   },
   {
-    value: '100%',
-    label: 'of agent actions logged with reasoning trace. Click any number on this page for the underlying trace ID.',
-    source: null,
+    value: 'Logged',
+    label: 'with trace IDs the partner can hand to the bar disciplinary committee. The answer to "what left the firm" is one export away.',
+    source: 'Vision doc §6, marquee toil',
   },
 ]
 
 export const FAQS = [
   {
+    question: 'What actually runs on the Mac, and what goes to the cloud?',
+    answer: 'Day-to-day client work — reading documents, drafting time entries, processing intake forms, conflict checks — runs locally on Apple Silicon. Cloud frontier models are reserved for the small set of steps that genuinely need one (e.g. complex argument drafting). Even then, identifying information is stripped on-device first, and the partner sees and approves the redacted prompt before it leaves.',
+  },
+  {
+    question: 'How is this different from "we encrypt your data in the cloud"?',
+    answer: 'Most legal-AI products send your client documents to their servers and tell you it\'s encrypted at rest. That doesn\'t answer the bar\'s question — which is whether confidential client information left the firm without informed consent. Our default answer is "no, the document didn\'t leave."',
+  },
+  {
+    question: 'Will my model provider train on my client data?',
+    answer: 'No. We use a contractual no-training term with every model provider that handles a redacted prompt from your firm. We can share the contract on request. And the prompt itself is redacted, so even if a provider violated the term, what they\'d have is placeholder text.',
+  },
+  {
+    question: 'What about ABA Model Rules 1.6 and 5.3?',
+    answer: 'The product is designed against 1.1 (competence), 1.6 (confidentiality), and 5.3 (supervision of nonlawyer assistants). Every action is approval-gated; every approval is logged with a trace ID; the supervision record is exportable on demand.',
+  },
+  {
+    question: 'How is this different from Harvey, Legora, or CoCounsel?',
+    answer: 'They\'re sized for AmLaw 200 — IT teams, procurement, $30K/seat budgets, BigLaw workflows on the vendor\'s cloud. We\'re sized for the owner-operator partner of a 1–10 attorney firm who can\'t outsource their security architecture to a CISO. Different buyer, different threat model, different defaults.',
+  },
+  {
     question: 'Do I need an IT department to set this up?',
-    answer: 'No. You describe your practice in plain English — your intake process, your billing cadence, your follow-up style. The system turns that into agents. If you can describe how you want your practice to run, you can set this up in an afternoon. Works for a solo or a 15-person firm.',
+    answer: 'No. The product is built for owner-operator firms that don\'t have one. The partner installs on their Mac, describes how their practice runs, and the agent gets to work. An afternoon for a solo, a day or two for a 10-attorney firm.',
   },
   {
-    question: 'How is this different from Clio or MyCase automation?',
-    answer: 'Practice management tools automate specific features inside their platform. ClaudeFirm agents work across your entire practice — intake, billing, collections, marketing, scheduling — in a unified system that learns your voice and your processes. And unlike features bolted onto a case management tool, the security architecture was built from the ground up for AI agents handling privileged information.',
-  },
-  {
-    question: 'Will clients know they\'re talking to AI?',
-    answer: 'The intake response is immediate and personalized, but every substantive communication goes through your approval. The AI drafts in your voice. You review and send. Clients experience a responsive, organized firm — because that\'s what they\'re getting.',
-  },
-  {
-    question: 'What about client confidentiality and ethics?',
-    answer: 'ClaudeFirm is designed to exceed the requirements of ABA Model Rules 1.1 (competence), 1.6 (confidentiality), and 5.3 (supervision of nonlawyer assistants). Client data is cryptographically isolated. Every action has an immutable audit trail. Every output requires attorney approval. You can deploy on your own hardware if you want data to never leave your building.',
-  },
-  {
-    question: 'Can a prompt injection compromise my client data?',
-    answer: 'Prompt injection is an unsolved problem at the AI model level — no vendor can fully prevent it. That\'s why our defense is architectural. Even if a hidden instruction in an opposing filing tricks the AI, the agent runs in a sandbox with no network access, all output goes through your approval gate, and client data is isolated per-matter. The attack has nowhere to go.',
-  },
-  {
-    question: 'What does "security from the ground up" actually mean?',
-    answer: 'It means the security wasn\'t added after we built the product — it\'s how the product was designed. Client data is isolated per-matter. Every output requires attorney approval before it goes anywhere. Every action has a complete audit trail. And you can run the whole thing on hardware you control. Built by an enterprise security engineer, not a legal-tech startup.',
-  },
-  {
-    question: 'Does the AI get better over time?',
-    answer: 'Yes. Five feedback loops compound over 12 months. Agent memory builds institutional knowledge — judge preferences, opposing counsel patterns, your drafting style. Approval feedback refines quality. By month 12, most drafts are approved without revision, up from roughly 15% in month one. The system gets cheaper and better the longer you use it.',
+    question: 'What if the Mac is lost or stolen?',
+    answer: 'Per-matter workspaces are encrypted at rest with keys tied to FileVault and the partner\'s authentication. We document the recovery procedure for both the partner and their malpractice carrier; it\'s designed to be the same conversation a paper-records office would have if a filing cabinet walked off.',
   },
 ]

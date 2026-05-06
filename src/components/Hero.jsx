@@ -17,27 +17,34 @@ export default function Hero() {
               <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-8 rounded border border-brass/30 bg-brass/[0.06]">
                 <span className="w-1.5 h-1.5 rounded-full bg-brass" />
                 <span className="text-[11px] font-display font-semibold tracking-widest uppercase text-brass/90">
-                  Real outputs. No demo magic.
+                  On-device by default
                 </span>
               </div>
             </FadeIn>
             <FadeIn delay={80}>
               <h1 className="font-display font-bold text-[clamp(2rem,7vw,4.5rem)] leading-[1.05] tracking-tight">
-                AI demos are easy.{' '}
+                On your machine.{' '}
                 <br className="hidden md:block" />
-                Real motions{' '}
-                <br className="hidden md:block" />
-                <span className="text-brass">are not.</span>
+                <span className="text-brass">Off the record.</span>
               </h1>
             </FadeIn>
 
             <FadeIn delay={160}>
               <p className="mt-8 text-lg md:text-xl leading-relaxed text-slate-light max-w-[640px]">
-                Below: actual outputs from actual matters. Trace IDs you can
-                audit. The diff between our agent's first draft and what the
-                senior associate filed. The rejected drafts and why they were
-                rejected. The supervision log. We show our work because the
-                bar will ask you to.
+                Client work runs locally on the lawyer&rsquo;s Mac. When a
+                cloud model is the right tool, identifying information is
+                stripped on-device before the call leaves the building, and
+                the partner approves the redacted prompt. No client material
+                trains anyone&rsquo;s model. Nothing reaches a third party
+                that the partner has not seen first.
+              </p>
+            </FadeIn>
+
+            <FadeIn delay={200}>
+              <p className="mt-4 text-sm italic text-brass/60 max-w-[640px]">
+                [Placeholder until LOI partner visit] &mdash; the partner&rsquo;s
+                IT-conversation quote and observed bar-tech objections replace
+                this block once the 90-minute observation lands.
               </p>
             </FadeIn>
 
@@ -45,7 +52,7 @@ export default function Hero() {
               <div className="mt-12">
                 <WaitlistForm dark />
                 <div className="mt-5">
-                  <Button variant="ghost" href="#problem">Where your week actually goes &darr;</Button>
+                  <Button variant="ghost" href="#problem">What stays on the Mac &darr;</Button>
                 </div>
               </div>
             </FadeIn>
@@ -94,8 +101,8 @@ export default function Hero() {
 
                 {/* Status bar */}
                 <div className="bg-ink-light px-5 py-2 text-[11px] text-white/30 font-mono border-t border-white/[0.06] flex justify-between">
-                  <span>4 agents &middot; every action traced</span>
-                  <span className="text-green-500/60">audit log &middot; signed &middot; exportable</span>
+                  <span>4 agents &middot; on-device by default</span>
+                  <span className="text-green-500/60">no training &middot; no telemetry &middot; per-matter keys</span>
                 </div>
               </div>
             </FadeIn>

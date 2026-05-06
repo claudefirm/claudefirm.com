@@ -10,20 +10,23 @@ export default function Problem() {
         <div className="lg:col-span-5">
           <FadeIn>
             <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight text-gray-900">
-              The 63% problem.
+              What stays on the Mac.
               <br />
-              <span className="text-slate">Where your week actually goes.</span>
+              <span className="text-slate">And what doesn&rsquo;t leave without your sign-off.</span>
             </h2>
           </FadeIn>
           <FadeIn delay={100}>
             <div className="mt-8 pl-5 border-l-2 border-brass/40">
               <p className="text-slate italic text-lg leading-relaxed">
-                The average small firm lawyer bills 37% of their working hours.
-                The other 63% is intake calls, invoice follow-ups, calendar
-                management, and the same 8 questions every new client asks.
+                The bar&rsquo;s rules of professional conduct don&rsquo;t care
+                what the AI vendor&rsquo;s privacy policy says. They care
+                whether confidential client information left the firm without
+                informed consent. We built the product so the answer is
+                provably no &mdash; by default, and visibly, in a log you can
+                hand to the disciplinary committee.
               </p>
               <p className="mt-3 text-[13px] text-brass-muted font-display font-semibold">
-                — Clio Legal Trends Report
+                &mdash; Vision doc §7C, on-device / off-the-record framing
               </p>
             </div>
           </FadeIn>
