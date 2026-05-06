@@ -51,11 +51,32 @@ jobs:
           # tag for Knative to pull on every revision.
           echo "image=zot.grubernet.es/claudefirm-com/$BRANCH" >> "$GITHUB_OUTPUT"
 
-      - name: Checkout source
+      # Variant branches diverge in src/ but don't carry the Dockerfile,
+      # .dockerignore, or workflow files (those live on main). Check out
+      # main for build infra; then overlay the variant's content paths.
+      # Keeps each variant branch focused on content changes only.
+      - name: Checkout main (build infra)
         uses: actions/checkout@v4
         with:
-          ref: ${{ steps.vars.outputs.branch }}
-          fetch-depth: 1
+          ref: main
+          fetch-depth: 0   # need history to fetch other branches
+
+      - name: Overlay variant source
+        env:
+          BRANCH: ${{ steps.vars.outputs.branch }}
+        run: |
+          set -euo pipefail
+          git fetch origin "$BRANCH" --depth=1
+          # Replace these paths with the variant's version. Anything not
+          # listed (Dockerfile, .dockerignore, .github/) stays from main.
+          for path in src public index.html package.json pnpm-lock.yaml \
+                      vite.config.js eslint.config.js docker-compose.dev.yml; do
+            if git cat-file -e "origin/$BRANCH:$path" 2>/dev/null; then
+              rm -rf "$path"
+              git checkout "origin/$BRANCH" -- "$path"
+            fi
+          done
+          git status --short
 
       # Verify the runner has zot creds mounted by the ARC pod template
       # (apps/base/arc-runner-claudefirm/values.yaml mounts the
