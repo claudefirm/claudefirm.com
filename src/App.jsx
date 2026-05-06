@@ -83,7 +83,7 @@ function VariantCard({ v }) {
   )
 }
 
-function Step({ when, where, what, why }) {
+function Step({ when, where, what, why, code, codeLang }) {
   return (
     <li className="rounded-xl border border-stone-300 bg-white p-5">
       <p className="font-mono text-xs uppercase tracking-wider text-stone-500">
@@ -91,6 +91,16 @@ function Step({ when, where, what, why }) {
       </p>
       <p className="mt-1 font-medium">{what}</p>
       {why && <p className="mt-1 text-sm text-stone-600">{why}</p>}
+      {code && (
+        <pre className="mt-3 overflow-x-auto rounded-lg bg-stone-900 p-3 text-xs leading-snug text-stone-100">
+          {codeLang && (
+            <div className="mb-2 font-mono text-[10px] uppercase tracking-wider text-stone-500">
+              {codeLang}
+            </div>
+          )}
+          <code className="font-mono">{code}</code>
+        </pre>
+      )}
     </li>
   )
 }
@@ -152,29 +162,79 @@ export default function App() {
               where="arc-runners-claudefirm (in-cluster DinD)"
               what={<>CI checks out <code>main</code>, overlays <code>src/</code> from the variant branch, builds <code>dist/</code> with Vite, bakes it into a Caddy image, pushes 3 tags to the in-cluster Zot registry.</>}
               why="Tags: :sha for traceability, :commit-ts-sha for Flux to sort, :latest for ad-hoc curl. The runner SA has zero cluster RBAC — it can build and push, nothing else."
+              codeLang=".github/workflows/preview-variants.yml"
+              code={`SHORT="\${SHA:0:8}"
+COMMIT_TS=$(git log -1 --format=%ct "origin/$BRANCH")
+docker build \\
+  --build-arg SOURCE_SHA=$SHA \\
+  --build-arg SOURCE_BRANCH=$BRANCH \\
+  --tag $IMAGE:$SHA \\
+  --tag $IMAGE:$COMMIT_TS-$SHORT \\
+  --tag $IMAGE:latest .
+docker push --all-tags $IMAGE`}
             />
             <Step
               when="t ≈ 60 s"
               where="flux image-reflector"
-              what={<><code>ImageRepository</code> rescans Zot. The new <code>&lt;ts&gt;-&lt;sha&gt;</code> tag is the highest timestamp, so the <code>ImagePolicy</code> resolves it as the latest.</>}
+              what={<><code>ImageRepository</code> rescans Zot. The <code>ImagePolicy</code> filters tags to the <code>&lt;ts&gt;-&lt;sha&gt;</code> shape, sorts numerically by the leading timestamp, and picks the highest as latest.</>}
               why="No webhook, no push trigger. The reflector polls every minute. Pull cred is the same Zot apikey that powers paperclip-fourslide-preview."
+              codeLang="deploy/dev-sites/image-automation.yaml"
+              code={`apiVersion: image.toolkit.fluxcd.io/v1
+kind: ImagePolicy
+metadata: { name: variant-marketing, namespace: fourslide }
+spec:
+  imageRepositoryRef: { name: variant-marketing }
+  filterTags:
+    pattern: '^(?P<ts>[0-9]+)-[a-f0-9]+$'
+    extract: '$ts'
+  policy:
+    numerical: { order: asc }`}
             />
             <Step
               when="t ≈ 60–120 s"
               where="flux image-automation"
-              what={<><code>ImageUpdateAutomation</code> rewrites the <code>image:</code> line in <code>deploy/dev-sites/services.yaml</code> at the <code>{`# {"$imagepolicy": ...}`}</code> setter marker, commits to <code>fourslide/fourslide</code> main, pushes.</>}
+              what={<><code>ImageUpdateAutomation</code> rewrites the <code>image:</code> line in <code>services.yaml</code> at the setter marker, commits to <code>fourslide/fourslide</code> main, pushes.</>}
               why="The commit is signed as flux-image-automation@foursli.de, authored by Flux. Reverse a bad rollout the same way you reverse anything else: git revert."
+              codeLang="deploy/dev-sites/services.yaml (excerpt)"
+              code={`spec:
+  template:
+    spec:
+      containers:
+        - image: zot.grubernet.es/claudefirm-com/variant-marketing:1778082473-5403dd44 # {"$imagepolicy": "fourslide:variant-marketing"}`}
             />
             <Step
               when="t ≈ 120 s"
               where="flux kustomize-controller"
               what="Kustomization detects the spec change, applies it. Knative creates a new Revision, pulls the new digest, spins a Caddy pod (always-warm, minScale=1), cuts traffic over."
               why="Old revisions stick around for fast revert. Knative does the blue/green; we don't touch deployments directly."
+              codeLang="ksvc spec — what Knative actually rolls"
+              code={`apiVersion: serving.knative.dev/v1
+kind: Service
+metadata: { name: variant-marketing, namespace: fourslide }
+spec:
+  template:
+    metadata:
+      annotations:
+        autoscaling.knative.dev/min-scale: "1"
+    spec:
+      containers:
+        - image: zot.grubernet.es/claudefirm-com/variant-marketing:1778082473-5403dd44
+          ports: [{ containerPort: 8080 }]`}
             />
             <Step
               when="t ≈ 130 s"
               where="reviewer's browser"
               what={<><code>https://&lt;variant&gt;-dev.foursli.de/</code> serves the new build through the istio-https Gateway and per-host Authentik proxy. The build-stamp at the bottom of each variant card shows the live sha.</>}
+              codeLang="Caddyfile baked into the image"
+              code={`:8080 {
+  root * /srv
+  encode gzip zstd
+  handle /healthz { respond "ok" 200 }
+  handle {
+    try_files {path} /index.html
+    file_server
+  }
+}`}
             />
           </ol>
         </section>
