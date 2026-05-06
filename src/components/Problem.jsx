@@ -10,20 +10,22 @@ export default function Problem() {
         <div className="lg:col-span-5">
           <FadeIn>
             <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight text-gray-900">
-              The 63% problem.
+              The math.
               <br />
-              <span className="text-slate">Where your week actually goes.</span>
+              <span className="text-slate">Per toil. In dollars.</span>
             </h2>
           </FadeIn>
           <FadeIn delay={100}>
             <div className="mt-8 pl-5 border-l-2 border-brass/40">
               <p className="text-slate italic text-lg leading-relaxed">
-                The average small firm lawyer bills 37% of their working hours.
-                The other 63% is intake calls, invoice follow-ups, calendar
-                management, and the same 8 questions every new client asks.
+                The owner-operator partner of a 1&ndash;10 attorney firm has
+                three numbers that move when an AI paralegal lands: time on
+                intake, time on billing, and the percentage of invoices that
+                age past 60 days. We list each below as a design target with
+                the math written out, not as a customer testimonial.
               </p>
               <p className="mt-3 text-[13px] text-brass-muted font-display font-semibold">
-                — Clio Legal Trends Report
+                &mdash; Vision doc §7D, the ROI lens
               </p>
             </div>
           </FadeIn>
