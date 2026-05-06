@@ -23,7 +23,11 @@ permissions:
   contents: write
 
 concurrency:
-  group: preview-variants-${{ github.ref_name }}
+  # Group by the variant being built — for workflow_dispatch the input
+  # branch differs per call; for push events github.ref_name == the
+  # variant branch. Without this, parallel dispatches from main cancel
+  # each other because they'd all share `github.ref_name`.
+  group: preview-variants-${{ inputs.branch || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
