@@ -5,31 +5,31 @@ import {
 } from 'lucide-react'
 
 export const NAV_ITEMS = [
-  { label: 'The Problem', href: '#problem' },
+  { label: 'The Dichotomy', href: '#problem' },
   { label: 'Your Team', href: '#team' },
   { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Security', href: '#trust' },
+  { label: 'Safeguards', href: '#trust' },
   { label: 'FAQ', href: '#faq' },
 ]
 
 export const PAIN_POINTS = [
   {
     icon: Clock,
-    stat: '6 hrs',
-    title: 'Average intake response time',
-    description: 'The lawyer who responds first gets the client 70% of the time. Not the best lawyer — the fastest one. You\'re losing clients every day because you called back 6 hours later and someone else called back in 45 minutes.',
+    stat: '63%',
+    title: 'Of your week is administrative toil',
+    description: 'Intake forms, conflict checks, billing entries drafted from memory at 9pm. The work is real; none of it is the work you trained to do. Handcuffed chatbots can\'t handle it. Reckless free agents can\'t be trusted with it.',
   },
   {
     icon: TrendingDown,
-    stat: '15%',
-    title: 'Of your revenue disappears',
-    description: 'The average small firm collection rate is 85%. Not because clients won\'t pay — because you\'re in court at 9am and too tired to chase invoices at 4pm. You send a reminder next week. Then you forget. Then 90 days pass and now it\'s awkward.',
+    stat: 'Bar',
+    title: 'Discipline & risk lawyers already take',
+    description: 'You see your colleagues pasting confidential documents into ChatGPT despite firm policy and bar guidance. They\'re taking the risk because the safe alternatives don\'t get the work done. That behavior is the strongest possible demand signal.',
   },
   {
     icon: BarChart3,
-    stat: '100%',
-    title: 'Of small firms live the feast-or-famine cycle',
-    description: 'You get busy. You stop marketing. Pipeline dries up. Matters end. You panic. You start marketing again. The reason isn\'t that you\'re bad at marketing — it\'s that marketing is a daily activity and you\'re a full-time lawyer.',
+    stat: 'Both',
+    title: 'Bad options today',
+    description: 'Sandboxed chatbots save no time. Ungoverned free agents work once but break scary the second time. No current product gives small firms capable agents with safeguards built in — running on their own machine.',
   },
 ]
 
@@ -39,142 +39,142 @@ export const TEAM_MEMBERS = [
     role: 'Head Partner',
     description: 'Operations, scheduling, matter management',
     tasks: [
-      'Daily deadline briefs with red/yellow/green flags',
-      'Inbox triage and priority routing to you',
-      'Calendar management and conflict checking',
+      'Daily deadline brief with judgment calls flagged before they fire',
+      'Inbox triage that surfaces the three things that actually need your eyes',
+      'Calendar coordination and conflict checking so you don\'t double-book',
     ],
-    autonomy: 'Board review',
-    autonomyDescription: 'Reports directly to you. Escalates all judgment calls.',
+    autonomy: 'Approval-gated',
+    autonomyDescription: 'Reports to you. Escalates judgment calls before acting.',
   },
   {
     icon: UserPlus,
     role: 'Intake Agent',
-    description: 'Lead response, scheduling, onboarding',
+    description: 'Triage, conflict check, consult booking',
     tasks: [
-      'Personalized response in minutes — references what the client actually described',
-      'Consultation scheduling with pre-call questionnaire',
-      'One-page client summary prepared before your call',
+      'Reads the incoming PDF; flags privileged material the human eye misses',
+      'Drafts the engagement letter with the actual matter\'s details',
+      'Prepares a one-page summary before the call, not after',
     ],
-    autonomy: 'Auto + review',
-    autonomyDescription: 'Responds immediately. You review before consultations.',
+    autonomy: 'Approval-gated',
+    autonomyDescription: 'Drafts everything. Nothing reaches a prospect without your sign-off.',
   },
   {
     icon: Receipt,
     role: 'Billing Agent',
-    description: 'Invoicing, collections, time capture',
+    description: 'Time capture, narrative drafting, collections',
     tasks: [
-      'Same-day time entries with professional narratives',
-      'Automated follow-up sequence at 7, 14, and 21 days — each personalized',
-      'Collection rate tracking and receivables dashboard',
+      'Drafts billable-hour entries from your calendar and mail edits',
+      'Writes narratives in your phrasing, not legal-tech filler',
+      'Sends follow-ups on aged invoices — in your voice, after you approve',
     ],
-    autonomy: 'Draft only',
+    autonomy: 'Approval-gated',
     autonomyDescription: 'Drafts in your voice. You approve every send.',
   },
   {
     icon: Megaphone,
-    role: 'Marketing Agent',
-    description: 'Pipeline, referrals, client retention',
+    role: 'Practice Agent',
+    description: 'Document drafting, discovery review, marketing',
     tasks: [
-      'Monthly personal check-ins with past clients — not a newsletter',
-      'Weekly LinkedIn posts drafted from your insights',
-      'Quarterly referral source follow-ups',
+      'Drafts from templates with the citations and tone that match your judges',
+      'Sorts incoming discovery with privilege flags and privilege logs',
+      'Drafts referral check-ins that don\'t sound like a newsletter',
     ],
-    autonomy: 'Draft only',
-    autonomyDescription: 'Drafts everything. Nothing sends without you.',
+    autonomy: 'Approval-gated',
+    autonomyDescription: 'Drafts everything. You sign before anything leaves the firm.',
   },
 ]
 
 export const HOW_IT_WORKS_STEPS = [
   {
     number: '01',
-    title: 'Tell it how you run your practice',
-    description: 'Set up agents the way you\'d set up employees — by role, with clear permissions, your tone of voice, and your processes. In plain English, not code.',
+    title: 'They tell us what they\'re already doing',
+    description: 'Every small-firm partner already runs a practice with specific processes: intake responses, billing follow-ups, conflict-check rules. We don\'t ask them to change how they work; we ask them to describe it in plain English.',
   },
   {
     number: '02',
-    title: 'Agents handle the 63%',
-    description: 'Intake responses go out in minutes. Invoices get followed up on schedule. Past clients hear from you regularly. The admin work happens without you touching it.',
+    title: 'The agent does the toil they already hate',
+    description: 'Intake forms get processed in minutes instead of hours. Billing entries get drafted from your calendar instead of memory. Aged invoices get followed up automatically instead of being forgotten.',
   },
   {
     number: '03',
-    title: 'You practice law',
-    description: 'Nothing leaves the firm without your sign-off. Every draft sounds like you wrote it. Every action is logged. You just got 90 minutes back in your day.',
+    title: 'You review and sign — now the work gets done',
+    description: 'Nothing leaves without your approval. Every output sounds like you wrote it. The supervision record is complete for when the bar eventually asks how you supervised your AI.',
   },
 ]
 
 export const TRUST_POINTS = [
   {
     icon: Eye,
-    title: 'The AI cannot send an email',
-    description: 'It can write one. It cannot send one. Every email, every invoice, every filing sits in a drafts queue until you read it and hit send. There is no autopilot mode. There is no "oops."',
+    title: 'The AI cannot take unsupervised action',
+    description: 'It can draft. It cannot send. Every email, invoice, filing sits in a drafts queue until you read and approve. No autopilot. No "oops".',
   },
   {
     icon: Shield,
-    title: 'Client A\'s files are locked away from Client B',
-    description: 'The agent working on the Johnson matter cannot see the Smith files. Period. Not "it probably won\'t" — it literally cannot. Separate locks, separate keys.',
+    title: 'Per-matter isolation',
+    description: 'The agent working on Acme matters cannot see Smith files. Not "shouldn\'t" — cannot. Each matter has its own workspace and keys.',
   },
   {
     icon: FileCheck,
-    title: 'Everything the AI does is written down',
-    description: 'Every document it read. Every draft it wrote. Every action you approved. A complete paper trail. When the bar asks how you supervised your AI — and they will — you hand them the log.',
+    title: 'Complete supervision log',
+    description: 'Every prompt, every document read, every draft produced, every approval granted. The bar will ask for this; you hand them the complete paper trail.',
   },
   {
     icon: Server,
-    title: 'Your data can stay in your office',
-    description: 'Run it on our cloud. Or run it on a computer in your office closet. If you don\'t want client data leaving your building, it doesn\'t leave your building. Your call.',
+    title: 'Runs on the lawyer\'s machine',
+    description: 'Client work stays on the Mac by default. When cloud AI is needed, identifying information is stripped on your machine first — then you authorize the step.',
   },
 ]
 
 export const STATS = [
   {
-    value: '6 min',
-    label: 'intake response — down from 6 hours. The fastest lawyer gets the client 70% of the time.',
-    source: 'Lead response studies',
+    value: 'Intake',
+    label: '30–60 minutes of paralegal work compressed into 90 seconds. The agent works faster than the human because it doesn\'t get tired or distracted.',
+    source: 'Vision doc §6, marquee toil',
   },
   {
-    value: '94%',
-    label: 'collection rate — up from 85%. On $300K in annual billings, that\'s $27,000 recovered.',
-    source: 'Clio Legal Trends Report',
+    value: 'Billable',
+    label: '5–10 hours per attorney per week recovered from time-capture. At $300/hour, that is $1,500–$3,000 in recaptured capacity.',
+    source: 'Vision doc §6, marquee toil',
   },
   {
-    value: '7.5 hrs',
-    label: 'recovered per week. At your billing rate, that\'s $1,500 to $3,000 in recaptured capacity.',
-    source: null,
+    value: 'LOI',
+    label: 'in active negotiation with a design-partner firm. Behavioral evidence: lawyers already taking risk with ChatGPT despite firm policy.',
+    source: 'Vision doc §9, demand evidence',
   },
   {
-    value: '60–80',
-    label: 'active matters managed with the responsiveness of a much larger firm. Without the overhead.',
-    source: null,
+    value: 'Third',
+    label: 'way. The first way is handcuffed chatbots. The second way is reckless free agents. The third way is capable agents with safeguards built in.',
+    source: 'Vision doc §3, the false dichotomy',
   },
 ]
 
 export const FAQS = [
   {
+    question: 'Why would a lawyer use ChatGPT if it\'s risky?',
+    answer: 'Because the safe alternatives don\'t get the work done. Handcuffed chatbots can\'t process intake forms or draft time entries. Reckless free agents can, so lawyers take the risk. The demand signal isn\'t what they say in surveys; it\'s what they actually do.',
+  },
+  {
+    question: 'How is ClaudeFirm different from both?',
+    answer: 'It\'s the third way: capable enough to handle the toil lawyers want to offload, with safeguards built in. It runs on the lawyer\'s Mac, not someone else\'s server. Every output requires approval. Every action is logged.',
+  },
+  {
     question: 'Do I need an IT department to set this up?',
-    answer: 'No. You describe your practice in plain English — your intake process, your billing cadence, your follow-up style. The system turns that into agents. If you can describe how you want your practice to run, you can set this up in an afternoon. Works for a solo or a 15-person firm.',
+    answer: 'No. The product is built for owner-operator firms that don\'t have one. You describe how your practice runs — intake, billing, conflict checks — in plain English. An afternoon for a solo, a day or two for a 10-attorney firm.',
   },
   {
-    question: 'How is this different from Clio or MyCase automation?',
-    answer: 'Practice management tools automate specific features inside their platform. ClaudeFirm agents work across your entire practice — intake, billing, collections, marketing, scheduling — in a unified system that learns your voice and your processes. And unlike features bolted onto a case management tool, the security architecture was built from the ground up for AI agents handling privileged information.',
+    question: 'How is this different from Harvey, Legora, or CoCounsel?',
+    answer: 'They\'re sized for AmLaw 200 — IT teams, procurement processes, $30K/seat budgets, BigLaw workflows. We\'re sized for the owner-operator partner of a 1–10 attorney firm. Different buyer, different price, different toil.',
   },
   {
-    question: 'Will clients know they\'re talking to AI?',
-    answer: 'The intake response is immediate and personalized, but every substantive communication goes through your approval. The AI drafts in your voice. You review and send. Clients experience a responsive, organized firm — because that\'s what they\'re getting.',
+    question: 'How is this different from Clio or MyCase?',
+    answer: 'Clio and MyCase are case management tools. Keep them. ClaudeFirm is the agent layer that does the work across them. We integrate; we don\'t replace.',
   },
   {
-    question: 'What about client confidentiality and ethics?',
-    answer: 'ClaudeFirm is designed to exceed the requirements of ABA Model Rules 1.1 (competence), 1.6 (confidentiality), and 5.3 (supervision of nonlawyer assistants). Client data is cryptographically isolated. Every action has an immutable audit trail. Every output requires attorney approval. You can deploy on your own hardware if you want data to never leave your building.',
+    question: 'What about client confidentiality?',
+    answer: 'Client work stays on your machine by default. When cloud AI is needed, identifying information is stripped on your machine first, you authorize the step, and the audit log records everything. Designed against ABA Model Rules 1.1, 1.6, and 5.3.',
   },
   {
-    question: 'Can a prompt injection compromise my client data?',
-    answer: 'Prompt injection is an unsolved problem at the AI model level — no vendor can fully prevent it. That\'s why our defense is architectural. Even if a hidden instruction in an opposing filing tricks the AI, the agent runs in a sandbox with no network access, all output goes through your approval gate, and client data is isolated per-matter. The attack has nowhere to go.',
-  },
-  {
-    question: 'What does "security from the ground up" actually mean?',
-    answer: 'It means the security wasn\'t added after we built the product — it\'s how the product was designed. Client data is isolated per-matter. Every output requires attorney approval before it goes anywhere. Every action has a complete audit trail. And you can run the whole thing on hardware you control. Built by an enterprise security engineer, not a legal-tech startup.',
-  },
-  {
-    question: 'Does the AI get better over time?',
-    answer: 'Yes. Five feedback loops compound over 12 months. Agent memory builds institutional knowledge — judge preferences, opposing counsel patterns, your drafting style. Approval feedback refines quality. By month 12, most drafts are approved without revision, up from roughly 15% in month one. The system gets cheaper and better the longer you use it.',
+    question: 'Will this work without the partner getting overwhelmed?',
+    answer: 'Every draft waits for your approval. The agent is a paralegal that never leaves the office — it does the toil, you review the work. The supervision record is built-in; you don\'t have to remember to create it.',
   },
 ]

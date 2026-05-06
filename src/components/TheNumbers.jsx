@@ -10,8 +10,8 @@ export default function TheNumbers() {
           The Numbers
         </p>
         <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight text-gray-900 max-w-xl">
-          This is not a technology argument.{' '}
-          <span className="text-slate">It's a math argument.</span>
+          The evidence they&rsquo;re already taking the risk.{' '}
+          <span className="text-slate">That behavior is the demand signal.</span>
         </h2>
       </FadeIn>
 

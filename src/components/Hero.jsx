@@ -13,22 +13,40 @@ export default function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left content */}
           <div className="lg:col-span-7">
+            <FadeIn delay={40}>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-8 rounded border border-brass/30 bg-brass/[0.06]">
+                <span className="w-1.5 h-1.5 rounded-full bg-brass" />
+                <span className="text-[11px] font-display font-semibold tracking-widest uppercase text-brass/90">
+                  The third way
+                </span>
+              </div>
+            </FadeIn>
             <FadeIn delay={80}>
               <h1 className="font-display font-bold text-[clamp(2rem,7vw,4.5rem)] leading-[1.05] tracking-tight">
-                You went to law school{' '}
+                Stop choosing between{' '}
                 <br className="hidden md:block" />
-                to practice law.{' '}
+                toy AI{' '}
                 <br className="hidden md:block" />
-                <span className="text-brass">63% of your week has other plans.</span>
+                <span className="text-brass">and dangerous AI.</span>
               </h1>
             </FadeIn>
 
             <FadeIn delay={160}>
               <p className="mt-8 text-lg md:text-xl leading-relaxed text-slate-light max-w-[640px]">
-                AI for legal research is nice. AI for running your practice is
-                transformational. ClaudeFirm handles intake, billing, collections,
-                and client follow-up — with security architecture built
-                from the ground up.
+                Handcuffed chatbots can&rsquo;t take action. Reckless free
+                agents can email out your client list. Lawyers are already
+                pasting privileged documents into ChatGPT against firm policy
+                because the safe alternatives don&rsquo;t get the work done.
+                ClaudeFirm is the third way: capable agents with safeguards
+                built in, running on your Mac.
+              </p>
+            </FadeIn>
+
+            <FadeIn delay={200}>
+              <p className="mt-4 text-sm italic text-brass/60 max-w-[640px]">
+                [Placeholder until LOI partner visit] &mdash; the partner&rsquo;s
+                observed behavior and quote replace this block once the
+                90-minute observation lands.
               </p>
             </FadeIn>
 
@@ -36,7 +54,7 @@ export default function Hero() {
               <div className="mt-12">
                 <WaitlistForm dark />
                 <div className="mt-5">
-                  <Button variant="ghost" href="#problem">Where your week actually goes &darr;</Button>
+                  <Button variant="ghost" href="#problem">The false dichotomy &darr;</Button>
                 </div>
               </div>
             </FadeIn>
@@ -85,8 +103,8 @@ export default function Hero() {
 
                 {/* Status bar */}
                 <div className="bg-ink-light px-5 py-2 text-[11px] text-white/20 font-body border-t border-white/[0.06] flex justify-between">
-                  <span>4 agents &middot; handles the 63%</span>
-                  <span className="text-green-500/50">Security from the ground up</span>
+                  <span>4 agents &middot; capable + safeguarded</span>
+                  <span className="text-green-500/50">On-device &middot; approval-gated</span>
                 </div>
               </div>
             </FadeIn>

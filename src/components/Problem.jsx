@@ -10,20 +10,24 @@ export default function Problem() {
         <div className="lg:col-span-5">
           <FadeIn>
             <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight text-gray-900">
-              The 63% problem.
+              The false dichotomy.
               <br />
-              <span className="text-slate">Where your week actually goes.</span>
+              <span className="text-slate">The AI lawyers are already using.</span>
             </h2>
           </FadeIn>
           <FadeIn delay={100}>
             <div className="mt-8 pl-5 border-l-2 border-brass/40">
               <p className="text-slate italic text-lg leading-relaxed">
-                The average small firm lawyer bills 37% of their working hours.
-                The other 63% is intake calls, invoice follow-ups, calendar
-                management, and the same 8 questions every new client asks.
+                The options lawyers have today are one of two bad ones.
+                Handcuffed chatbots can&rsquo;t take action and save no time.
+                Reckless free agents are capable but ungoverned &mdash; they&rsquo;ll
+                email out client lists if pointed at the wrong document. Lawyers
+                already take the risk, pasting confidential material into
+                ChatGPT against firm policy, because the safe paths don&rsquo;t
+                get the work done.
               </p>
               <p className="mt-3 text-[13px] text-brass-muted font-display font-semibold">
-                — Clio Legal Trends Report
+                &mdash; Vision doc §2, the pain in their words
               </p>
             </div>
           </FadeIn>
