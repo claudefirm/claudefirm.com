@@ -8,6 +8,7 @@ import TheNumbers from './components/TheNumbers'
 import FAQ from './components/FAQ'
 import CTA from './components/CTA'
 import Footer from './components/Footer'
+import BuildStamp from './components/BuildStamp'
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
       <FAQ />
       <CTA />
       <Footer />
+      <BuildStamp />
     </>
   )
 }
