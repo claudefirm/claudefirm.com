@@ -114,14 +114,41 @@ jobs:
           docker push "$IMAGE:latest"
           echo "::notice::pushed $IMAGE:$SHA and $IMAGE:latest"
 
-      # NOTE on Knative rollout: the cluster's KnativeService for each
-      # variant points at `:latest`. Knative resolves :latest to a digest
-      # at admission and pins. New :latest pushes don't trigger a new
-      # Revision until the ksvc spec changes. To force a roll after a
-      # CI build, an operator runs:
-      #   kubectl --context etcdrich -n fourslide annotate ksvc <branch> \
-      #     preview.foursli.de/last-build=$(date +%s) --overwrite
-      # The longer-term fix is Flux ImagePolicy + ImageUpdateAutomation
-      # watching the registry; tracked as a follow-up.
-      - name: Done
-        run: echo "image build complete; bump ksvc annotation to roll"
+      # Force the Knative ksvc to roll into the new image. Knative
+      # resolves `:latest` to a digest at admission and pins, so a
+      # second push of `:latest` doesn't auto-roll. We bump
+      # `spec.template.metadata.annotations.preview.foursli.de/last-build`
+      # which is a spec change and triggers a new Revision.
+      #
+      # Auth: the runner pod's SA
+      # `arc-runners-claudefirm-gha-rs-no-permission` is bound to a
+      # narrow Role in fourslide ns (verbs: patch on the four variant
+      # ksvc by name; see fourslide-co deploy/dev-sites/runner-rbac.yaml).
+      - name: Roll Knative ksvc to the new revision
+        env:
+          BRANCH: ${{ steps.vars.outputs.branch }}
+          SHA: ${{ steps.overlay.outputs.variant_sha }}
+        run: |
+          set -euo pipefail
+          K_TOKEN_FILE=/var/run/secrets/kubernetes.io/serviceaccount/token
+          K_CA=/var/run/secrets/kubernetes.io/serviceaccount/ca.crt
+          if [ ! -f "$K_TOKEN_FILE" ] || [ ! -f "$K_CA" ]; then
+            echo "::warning::no in-cluster SA token mounted; skipping Knative roll. Manually bump ksvc annotation."
+            exit 0
+          fi
+          K_TOKEN=$(cat "$K_TOKEN_FILE")
+          # In-cluster API: kubernetes.default.svc resolves cluster-internally
+          API=https://kubernetes.default.svc
+          PATCH=$(printf '{"spec":{"template":{"metadata":{"annotations":{"preview.foursli.de/last-build":"ci-%s-%s"}}}}}' "${SHA:0:8}" "$(date +%s)")
+          status=$(curl -fsS --cacert "$K_CA" \
+            -H "Authorization: Bearer $K_TOKEN" \
+            -H "Content-Type: application/merge-patch+json" \
+            -X PATCH \
+            "$API/apis/serving.knative.dev/v1/namespaces/fourslide/services/$BRANCH" \
+            --data-binary "$PATCH" \
+            -o /tmp/patch.json -w '%{http_code}') || {
+              echo "::error::PATCH failed: HTTP $status"
+              cat /tmp/patch.json
+              exit 1
+            }
+          echo "::notice::ksvc/$BRANCH rolled (HTTP $status). New revision will be ready in ~10-30s."
