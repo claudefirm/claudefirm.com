@@ -1,12 +1,13 @@
 name: Preview variants
 
-# Builds each variant-* branch on push and publishes the resulting dist/
-# tree to a `pages/<variant>` orphan branch. The fourslide cluster's
-# preview-server Deployment git-syncs those branches and serves them at
-# `<variant>-dev.foursli.de`, so the dev sites stay durable regardless of
-# whether the Coder dev workspaces are running. HOG keeps `pnpm dev` in
-# Coder for hot-reload iteration; this pipeline keeps the published
-# review surface alive after the workspace stops.
+# Builds each variant-* branch into an OCI image and pushes it to the
+# in-cluster zot registry at zot.grubernet.es/claudefirm-com/<variant>.
+# The fourslide cluster's Knative Services pull these images on the next
+# revision rollout, serving the result at `<variant>-dev.foursli.de`.
+#
+# Runs on the org's in-cluster ARC runner (`arc-runners-claudefirm`),
+# which has a DinD sidecar with zot creds pre-mounted at /root/.docker/
+# via the `zot-docker-config` secret. No GitHub-hosted runner involved.
 
 on:
   push:
@@ -20,23 +21,20 @@ on:
         type: string
 
 permissions:
-  contents: write
+  contents: read
 
 concurrency:
-  # Group by the variant being built — for workflow_dispatch the input
-  # branch differs per call; for push events github.ref_name == the
-  # variant branch. Without this, parallel dispatches from main cancel
-  # each other because they'd all share `github.ref_name`.
   group: preview-variants-${{ inputs.branch || github.ref_name }}
   cancel-in-progress: true
 
 jobs:
-  build-and-publish:
-    runs-on: ubuntu-latest
+  build-and-push:
+    runs-on: arc-runners-claudefirm
     steps:
       - name: Determine variant branch
         id: vars
         run: |
+          set -euo pipefail
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             BRANCH="${{ inputs.branch }}"
           else
@@ -47,7 +45,11 @@ jobs:
             *) echo "::error::branch '$BRANCH' is not a variant-* branch"; exit 1 ;;
           esac
           echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
-          echo "pages_branch=pages/$BRANCH" >> "$GITHUB_OUTPUT"
+          # Image repo: zot.grubernet.es/claudefirm-com/<branch>
+          # The branch name (e.g. variant-marketing) becomes the image
+          # name so tags map cleanly; sha tag for traceability, latest
+          # tag for Knative to pull on every revision.
+          echo "image=zot.grubernet.es/claudefirm-com/$BRANCH" >> "$GITHUB_OUTPUT"
 
       - name: Checkout source
         uses: actions/checkout@v4
@@ -55,48 +57,46 @@ jobs:
           ref: ${{ steps.vars.outputs.branch }}
           fetch-depth: 1
 
-      - uses: pnpm/action-setup@v4
-        with:
-          version: 10
-
-      - uses: actions/setup-node@v4
-        with:
-          node-version: 22
-          cache: pnpm
-
-      - name: Install
-        run: pnpm install --frozen-lockfile
-
-      - name: Build
-        # Vite serves dev with `base: "./"` for relative asset paths so the
-        # output works at any host. preview-server serves at the host root,
-        # so a relative base is correct for both contexts.
-        run: pnpm build
-
-      - name: Stash dist + commit info
+      # Verify the runner has zot creds mounted by the ARC pod template
+      # (apps/base/arc-runner-claudefirm/values.yaml mounts the
+      # zot-docker-config secret at /root/.docker/config.json on the dind
+      # sidecar). If this check fails, the runner-set is misconfigured
+      # and a CI-side workaround won't help — fix the cluster side.
+      - name: Sanity check zot auth
         run: |
           set -euo pipefail
-          mv dist /tmp/dist
-          echo "${{ github.sha }}" > /tmp/dist/.source-sha
-          echo "${{ steps.vars.outputs.branch }}" > /tmp/dist/.source-branch
-          date -u +"%Y-%m-%dT%H:%M:%SZ" > /tmp/dist/.built-at
-          touch /tmp/dist/.nojekyll
+          docker info >/dev/null 2>&1 || { echo "::error::dind not reachable"; exit 1; }
+          if ! docker pull --quiet alpine:3.21 >/dev/null 2>&1; then
+            echo "::warning::dind cannot pull from upstream; continuing"
+          fi
+          echo "docker config:"; ls -la /root/.docker/ 2>/dev/null || echo "(no /root/.docker)"
+          docker login zot.grubernet.es </dev/null 2>&1 || true # already auth'd via mounted config
 
-      - name: Publish to ${{ steps.vars.outputs.pages_branch }}
+      - name: Build + push variant image
         env:
-          PAGES_BRANCH: ${{ steps.vars.outputs.pages_branch }}
-          SRC_BRANCH: ${{ steps.vars.outputs.branch }}
-          SRC_SHA: ${{ github.sha }}
+          IMAGE: ${{ steps.vars.outputs.image }}
+          BRANCH: ${{ steps.vars.outputs.branch }}
+          SHA: ${{ github.sha }}
         run: |
           set -euo pipefail
-          git config user.email "preview-bot@foursli.de"
-          git config user.name  "preview-bot"
-          # Replace working tree with built dist
-          git checkout --orphan "$PAGES_BRANCH"
-          git rm -rf --quiet . || true
-          # Some files survive `git rm -rf` if they were untracked
-          find . -mindepth 1 -maxdepth 1 -not -name '.git' -exec rm -rf {} +
-          cp -a /tmp/dist/. .
-          git add -A
-          git commit -m "preview: $SRC_BRANCH @ ${SRC_SHA:0:8}" --allow-empty
-          git push origin "$PAGES_BRANCH" --force
+          docker build \
+            --build-arg "SOURCE_SHA=$SHA" \
+            --build-arg "SOURCE_BRANCH=$BRANCH" \
+            --tag "$IMAGE:$SHA" \
+            --tag "$IMAGE:latest" \
+            .
+          docker push "$IMAGE:$SHA"
+          docker push "$IMAGE:latest"
+          echo "::notice::pushed $IMAGE:$SHA and $IMAGE:latest"
+
+      # NOTE on Knative rollout: the cluster's KnativeService for each
+      # variant points at `:latest`. Knative resolves :latest to a digest
+      # at admission and pins. New :latest pushes don't trigger a new
+      # Revision until the ksvc spec changes. To force a roll after a
+      # CI build, an operator runs:
+      #   kubectl --context etcdrich -n fourslide annotate ksvc <branch> \
+      #     preview.foursli.de/last-build=$(date +%s) --overwrite
+      # The longer-term fix is Flux ImagePolicy + ImageUpdateAutomation
+      # watching the registry; tracked as a follow-up.
+      - name: Done
+        run: echo "image build complete; bump ksvc annotation to roll"
