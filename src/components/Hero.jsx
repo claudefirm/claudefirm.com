@@ -13,22 +13,38 @@ export default function Hero() {
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left content */}
           <div className="lg:col-span-7">
+            <FadeIn delay={40}>
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-8 rounded border border-brass/30 bg-brass/[0.06]">
+                <span className="w-1.5 h-1.5 rounded-full bg-brass" />
+                <span className="text-[11px] font-display font-semibold tracking-widest uppercase text-brass/90">
+                  For owner-operator firms · 1&ndash;10 attorneys
+                </span>
+              </div>
+            </FadeIn>
             <FadeIn delay={80}>
               <h1 className="font-display font-bold text-[clamp(2rem,7vw,4.5rem)] leading-[1.05] tracking-tight">
-                You went to law school{' '}
+                An AI paralegal{' '}
                 <br className="hidden md:block" />
-                to practice law.{' '}
+                that handles the toil,{' '}
                 <br className="hidden md:block" />
-                <span className="text-brass">63% of your week has other plans.</span>
+                <span className="text-brass">and never leaves your office.</span>
               </h1>
             </FadeIn>
 
             <FadeIn delay={160}>
               <p className="mt-8 text-lg md:text-xl leading-relaxed text-slate-light max-w-[640px]">
-                AI for legal research is nice. AI for running your practice is
-                transformational. ClaudeFirm handles intake, billing, collections,
-                and client follow-up — with security architecture built
-                from the ground up.
+                Intake, billing, drafting, filing &mdash; on your Mac. Client
+                work stays on your machine unless you authorize otherwise. Built
+                for the partner who&rsquo;s drowning in administrative toil and
+                doesn&rsquo;t have an in-house IT team to evaluate AI for them.
+              </p>
+            </FadeIn>
+
+            <FadeIn delay={200}>
+              <p className="mt-4 text-sm italic text-brass/60 max-w-[640px]">
+                [Placeholder until LOI partner visit] &mdash; the partner&rsquo;s
+                time-on-task number and quote replace this block once the
+                90-minute observation lands.
               </p>
             </FadeIn>
 
@@ -36,7 +52,7 @@ export default function Hero() {
               <div className="mt-12">
                 <WaitlistForm dark />
                 <div className="mt-5">
-                  <Button variant="ghost" href="#problem">Where your week actually goes &darr;</Button>
+                  <Button variant="ghost" href="#problem">See where the toil hides &darr;</Button>
                 </div>
               </div>
             </FadeIn>
@@ -85,8 +101,8 @@ export default function Hero() {
 
                 {/* Status bar */}
                 <div className="bg-ink-light px-5 py-2 text-[11px] text-white/20 font-body border-t border-white/[0.06] flex justify-between">
-                  <span>4 agents &middot; handles the 63%</span>
-                  <span className="text-green-500/50">Security from the ground up</span>
+                  <span>4 agents &middot; runs on your Mac</span>
+                  <span className="text-green-500/50">Approval-gated &middot; full audit</span>
                 </div>
               </div>
             </FadeIn>
