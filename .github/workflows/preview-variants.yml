@@ -1,0 +1,162 @@
+name: Preview variants
+
+# Builds each variant-* branch into an OCI image and pushes it to the
+# in-cluster zot registry at zot.grubernet.es/claudefirm-com/<variant>.
+# The fourslide cluster's Knative Services pull these images on the next
+# revision rollout, serving the result at `<variant>-dev.foursli.de`.
+#
+# Runs on the org's in-cluster ARC runner (`arc-runners-claudefirm`),
+# which has a DinD sidecar with zot creds pre-mounted at /root/.docker/
+# via the `zot-docker-config` secret. No GitHub-hosted runner involved.
+
+on:
+  push:
+    branches:
+      - 'variant-*'
+  workflow_dispatch:
+    inputs:
+      branch:
+        description: 'Variant branch to (re)build'
+        required: true
+        type: string
+
+permissions:
+  contents: read
+
+concurrency:
+  group: preview-variants-${{ inputs.branch || github.ref_name }}
+  cancel-in-progress: true
+
+jobs:
+  build-and-push:
+    runs-on: arc-runners-claudefirm
+    steps:
+      - name: Determine variant branch
+        id: vars
+        run: |
+          set -euo pipefail
+          if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
+            BRANCH="${{ inputs.branch }}"
+          else
+            BRANCH="${GITHUB_REF#refs/heads/}"
+          fi
+          case "$BRANCH" in
+            variant-*) ;;
+            *) echo "::error::branch '$BRANCH' is not a variant-* branch"; exit 1 ;;
+          esac
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          # Image repo: zot.grubernet.es/claudefirm-com/<branch>
+          # The branch name (e.g. variant-marketing) becomes the image
+          # name so tags map cleanly; sha tag for traceability, latest
+          # tag for Knative to pull on every revision.
+          echo "image=zot.grubernet.es/claudefirm-com/$BRANCH" >> "$GITHUB_OUTPUT"
+
+      # Variant branches diverge in src/ but don't carry the Dockerfile,
+      # .dockerignore, or workflow files (those live on main). Check out
+      # main for build infra; then overlay the variant's content paths.
+      # Keeps each variant branch focused on content changes only.
+      - name: Checkout main (build infra)
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          fetch-depth: 0   # need history to fetch other branches
+
+      - name: Overlay variant source
+        id: overlay
+        env:
+          BRANCH: ${{ steps.vars.outputs.branch }}
+        run: |
+          set -euo pipefail
+          git fetch origin "$BRANCH" --depth=1
+          # Replace these paths with the variant's version. Anything not
+          # listed (Dockerfile, .dockerignore, .github/) stays from main.
+          for path in src public index.html package.json pnpm-lock.yaml \
+                      vite.config.js eslint.config.js docker-compose.dev.yml; do
+            if git cat-file -e "origin/$BRANCH:$path" 2>/dev/null; then
+              rm -rf "$path"
+              git checkout "origin/$BRANCH" -- "$path"
+            fi
+          done
+          git status --short
+          # Capture the variant's HEAD sha so the build-stamp reflects
+          # the content commit, not main's sha.
+          VARIANT_SHA=$(git rev-parse "origin/$BRANCH")
+          echo "variant_sha=$VARIANT_SHA" >> "$GITHUB_OUTPUT"
+
+      # Login to zot via docker/login-action — same pattern claudefirm/platform's
+      # build-preview workflow uses successfully. The ARC dind sidecar has
+      # zot creds mounted on the daemon side, but `docker push` from the
+      # runner uses the runner's `~/.docker/config.json`, so we authenticate
+      # client-side here.
+      - name: Login to zot registry
+        uses: docker/login-action@v3
+        with:
+          registry: zot.grubernet.es
+          username: ${{ secrets.ZOT_CI_PUSH_USERNAME }}
+          password: ${{ secrets.ZOT_CI_PUSH_PASSWORD }}
+
+      - name: Build + push variant image
+        env:
+          IMAGE: ${{ steps.vars.outputs.image }}
+          BRANCH: ${{ steps.vars.outputs.branch }}
+          # Use the VARIANT branch's HEAD sha (not main's) so .source-sha
+          # served by the deployed page tracks the content commit.
+          SHA: ${{ steps.overlay.outputs.variant_sha }}
+        run: |
+          set -euo pipefail
+          # Tag strategy:
+          #   :<sha>                — full sha for traceability
+          #   :<commit-ts>-<short>  — numeric-sortable, watched by Flux
+          #                            ImagePolicy (filterTags pattern
+          #                            ^[0-9]+-[a-f0-9]+$, sort by ts
+          #                            ascending → highest = newest).
+          #   :latest               — convenience for ad-hoc curl. Knative
+          #                            does NOT pull this; ImageUpdateAutomation
+          #                            pins the digest into services.yaml.
+          SHORT="${SHA:0:8}"
+          # Commit timestamp from the variant's HEAD (Unix epoch).
+          COMMIT_TS=$(git log -1 --format=%ct "origin/$BRANCH")
+          POLICY_TAG="${COMMIT_TS}-${SHORT}"
+          docker build \
+            --build-arg "SOURCE_SHA=$SHA" \
+            --build-arg "SOURCE_BRANCH=$BRANCH" \
+            --tag "$IMAGE:$SHA" \
+            --tag "$IMAGE:$POLICY_TAG" \
+            --tag "$IMAGE:latest" \
+            .
+          docker push "$IMAGE:$SHA"
+          docker push "$IMAGE:$POLICY_TAG"
+          docker push "$IMAGE:latest"
+          echo "::notice::pushed $IMAGE:$POLICY_TAG (Flux-tracked) + :$SHA + :latest"
+
+      # Trigger the Flux Receiver in the cluster so ImageRepository +
+      # ImageUpdateAutomation reconcile immediately instead of waiting
+      # for the next 1m polling cycle. Cuts the push-to-live latency
+      # from ~2 min to ~30 s.
+      #
+      # No cluster RBAC required: the Receiver is a public webhook
+      # endpoint at flux-receiver.grubernet.es, gated by an HMAC
+      # signature using the secret stored as FLUX_RECEIVER_HMAC.
+      # FLUX_RECEIVER_PATH is the resolved /hook/<token> path of the
+      # `dev-sites-image-push` Receiver in the fourslide ns.
+      - name: Notify Flux to reconcile
+        if: success()
+        env:
+          PATH_HOOK: ${{ secrets.FLUX_RECEIVER_PATH }}
+          HMAC_SECRET: ${{ secrets.FLUX_RECEIVER_HMAC }}
+          BRANCH: ${{ steps.vars.outputs.branch }}
+          SHA: ${{ steps.overlay.outputs.variant_sha }}
+        run: |
+          set -euo pipefail
+          if [ -z "${PATH_HOOK:-}" ] || [ -z "${HMAC_SECRET:-}" ]; then
+            echo "::warning::FLUX_RECEIVER_{PATH,HMAC} not set; falling back to 1m polling cycle"
+            exit 0
+          fi
+          BODY=$(printf '{"branch":"%s","sha":"%s"}' "$BRANCH" "$SHA")
+          SIG=$(printf '%s' "$BODY" | openssl dgst -sha256 -hmac "$HMAC_SECRET" | awk '{print $2}')
+          curl -fsS -o /dev/null -w "flux-receiver: HTTP %{http_code}\n" \
+            -X POST "https://flux-receiver.grubernet.es${PATH_HOOK}" \
+            -H "Content-Type: application/json" \
+            -H "X-Signature: sha256=${SIG}" \
+            --data "$BODY"
+          echo "::notice::flux notified; ksvc should roll within ~30s"

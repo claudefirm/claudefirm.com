@@ -1,0 +1,10 @@
+.git
+.github
+node_modules
+dist
+.vite
+*.log
+.DS_Store
+.claude
+research/
+README.md
