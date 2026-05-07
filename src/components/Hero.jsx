@@ -17,26 +17,26 @@ export default function Hero() {
               <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-8 rounded border border-brass/30 bg-brass/[0.06]">
                 <span className="w-1.5 h-1.5 rounded-full bg-brass" />
                 <span className="text-[11px] font-display font-semibold tracking-widest uppercase text-brass/90">
-                  On-device by default
+                  Burner positioning &middot; by-construction cut
                 </span>
               </div>
             </FadeIn>
             <FadeIn delay={80}>
               <h1 className="font-display font-bold text-[clamp(2rem,7vw,4.5rem)] leading-[1.05] tracking-tight">
-                On your machine.{' '}
+                Subpoena-proof{' '}
                 <br className="hidden md:block" />
-                <span className="text-brass">Off the record.</span>
+                <span className="text-brass">by construction.</span>
               </h1>
             </FadeIn>
 
             <FadeIn delay={160}>
               <p className="mt-8 text-lg md:text-xl leading-relaxed text-slate-light max-w-[640px]">
-                Client work runs locally on the lawyer&rsquo;s Mac. When a
-                cloud model is the right tool, identifying information is
-                stripped on-device before the call leaves the building, and
-                the partner approves the redacted prompt. No client material
-                trains anyone&rsquo;s model. Nothing reaches a third party
-                that the partner has not seen first.
+                &ldquo;We don&rsquo;t store your data&rdquo; is a policy.
+                Policies have exceptions. Subpoenas override them.
+                ClaudeFirm makes the same statement structurally:&nbsp;
+                <em>there is no central system holding your data because
+                there is no central system.</em> The agent ran on your Mac.
+                The agent is gone. The work product is in your matter file.
               </p>
             </FadeIn>
 
@@ -52,7 +52,7 @@ export default function Hero() {
               <div className="mt-12">
                 <WaitlistForm dark />
                 <div className="mt-5">
-                  <Button variant="ghost" href="#problem">What stays on the Mac &darr;</Button>
+                  <Button variant="ghost" href="#burner">The three by-construction properties &darr;</Button>
                 </div>
               </div>
             </FadeIn>
@@ -67,7 +67,7 @@ export default function Hero() {
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-green-500/80 animate-pulse" />
                     <span className="font-display font-semibold text-[13px] text-white/70">
-                      Your Team
+                      Burner Agents &middot; on your machine, gone after the matter
                     </span>
                   </div>
                 </div>
@@ -101,8 +101,8 @@ export default function Hero() {
 
                 {/* Status bar */}
                 <div className="bg-ink-light px-5 py-2 text-[11px] text-white/30 font-mono border-t border-white/[0.06] flex justify-between">
-                  <span>4 agents &middot; on-device by default</span>
-                  <span className="text-green-500/60">no training &middot; no telemetry &middot; per-matter keys</span>
+                  <span>4 agents &middot; on-device by construction</span>
+                  <span className="text-green-500/60">subpoena-proof &middot; OSS-evaluable runtime</span>
                 </div>
               </div>
             </FadeIn>

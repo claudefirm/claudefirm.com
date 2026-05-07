@@ -6,9 +6,9 @@ import {
 
 export const NAV_ITEMS = [
   { label: 'On-Device', href: '#problem' },
+  { label: 'Burner', href: '#burner' },
   { label: 'Your Team', href: '#team' },
   { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Safeguards', href: '#trust' },
   { label: 'FAQ', href: '#faq' },
 ]
 
@@ -159,6 +159,14 @@ export const STATS = [
 ]
 
 export const FAQS = [
+  {
+    question: 'A subpoena lands on us. What do you have on my client?',
+    answer: 'Nothing. The agent that ran their matter no longer exists. We never had the prompts, never had the documents, never had the work product — those lived on your Mac the whole time. We can\'t produce what we don\'t hold. The audit log is yours, on your machine, and you decide what to disclose.',
+  },
+  {
+    question: 'A breach happens upstream — the model vendor gets hacked. What leaks?',
+    answer: 'For local-only matters: nothing of yours. For matters that authorized a cloud step: the stripped, de-identified payload that crossed the boundary, captured in your local audit. PII never crossed. The breach exposes a payload that doesn\'t identify anyone, and your IT or outside counsel can verify the property in the OSS-evaluable runtime.',
+  },
   {
     question: 'What actually runs on the Mac, and what goes to the cloud?',
     answer: 'Day-to-day client work — reading documents, drafting time entries, processing intake forms, conflict checks — runs locally on Apple Silicon. Cloud frontier models are reserved for the small set of steps that genuinely need one (e.g. complex argument drafting). Even then, identifying information is stripped on-device first, and the partner sees and approves the redacted prompt before it leaves.',
