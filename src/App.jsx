@@ -123,7 +123,7 @@ export default function App() {
             claudefirm-com / dev-sites pipeline
           </p>
           <h1 className="mt-3 text-4xl font-semibold tracking-tight md:text-5xl">
-            How a marketing variant goes live (event-driven, sub-30s).
+            How a marketing variant goes live in ~30&nbsp;seconds.
           </h1>
           <p className="mt-4 max-w-prose text-lg leading-relaxed text-stone-700">
             Four side-by-side cuts of <code>claudefirm.com</code> live at{' '}
@@ -158,10 +158,10 @@ export default function App() {
               why="HOG was iterating live in their Coder workspace (pnpm dev with hot reload). Push is the only handoff between iteration and the durable surface."
             />
             <Step
-              when="t ≈ 30 s"
+              when="t ≈ 25 s"
               where="arc-runners-claudefirm (in-cluster DinD)"
               what={<>CI checks out <code>main</code>, overlays <code>src/</code> from the variant branch, builds <code>dist/</code> with Vite, bakes it into a Caddy image, pushes 3 tags to the in-cluster Zot registry.</>}
-              why="Tags: :sha for traceability, :commit-ts-sha for Flux to sort, :latest for ad-hoc curl. The runner SA has zero cluster RBAC — it can build and push, nothing else."
+              why="Tags: :sha for traceability, :commit-ts-sha for Flux to sort, :latest for ad-hoc curl. The runner SA has zero cluster RBAC — it can build, push, and call the public Flux Receiver, nothing else."
               codeLang=".github/workflows/preview-variants.yml"
               code={`SHORT="\${SHA:0:8}"
 COMMIT_TS=$(git log -1 --format=%ct "origin/$BRANCH")
@@ -174,10 +174,30 @@ docker build \\
 docker push --all-tags $IMAGE`}
             />
             <Step
-              when="t ≈ 60 s"
+              when="t ≈ 26 s"
+              where="CI → Flux Receiver (event-driven)"
+              what={<>CI HMAC-signs the build-info and POSTs to <code>https://flux-receiver.grubernet.es/hook/&lt;token&gt;</code>. The Receiver fans the trigger to all five <code>ImageRepository</code> resources <em>and</em> the <code>ImageUpdateAutomation</code> in one call.</>}
+              why="No polling. ImageRepository CRs still scan Zot every 30 min as a safety net for missed webhooks, but the webhook is what makes push-to-live land in seconds rather than ~2 min."
+              codeLang="deploy/dev-sites/receiver.yaml"
+              code={`apiVersion: notification.toolkit.fluxcd.io/v1
+kind: Receiver
+metadata: { name: dev-sites-image-push, namespace: fourslide }
+spec:
+  type: generic-hmac
+  secretRef: { name: dev-sites-image-push-token }
+  resources:
+    - { kind: ImageRepository, name: variant-marketing,  apiVersion: image.toolkit.fluxcd.io/v1 }
+    - { kind: ImageRepository, name: variant-economics,  apiVersion: image.toolkit.fluxcd.io/v1 }
+    - { kind: ImageRepository, name: variant-rebel,      apiVersion: image.toolkit.fluxcd.io/v1 }
+    - { kind: ImageRepository, name: variant-evidence,   apiVersion: image.toolkit.fluxcd.io/v1 }
+    - { kind: ImageRepository, name: variant-pipeline,   apiVersion: image.toolkit.fluxcd.io/v1 }
+    - { kind: ImageUpdateAutomation, name: dev-sites,    apiVersion: image.toolkit.fluxcd.io/v1 }`}
+            />
+            <Step
+              when="t ≈ 27 s"
               where="flux image-reflector"
-              what={<><code>ImageRepository</code> rescans Zot. The <code>ImagePolicy</code> filters tags to the <code>&lt;ts&gt;-&lt;sha&gt;</code> shape, sorts numerically by the leading timestamp, and picks the highest as latest.</>}
-              why="No webhook, no push trigger. The reflector polls every minute. Pull cred is the same Zot apikey that powers paperclip-fourslide-preview."
+              what={<><code>ImageRepository</code> scans Zot (triggered by the webhook, not a poll). The <code>ImagePolicy</code> filters tags to the <code>&lt;ts&gt;-&lt;sha&gt;</code> shape, sorts numerically by the leading timestamp, and picks the highest as latest.</>}
+              why="Pull cred is the dev-sites-zot-pull secret minted by ESO from /zot/ci-push/* in AWS SSM. Same secret the ksvc imagePullSecret references."
               codeLang="deploy/dev-sites/image-automation.yaml"
               code={`apiVersion: image.toolkit.fluxcd.io/v1
 kind: ImagePolicy
@@ -191,9 +211,9 @@ spec:
     numerical: { order: asc }`}
             />
             <Step
-              when="t ≈ 60–120 s"
+              when="t ≈ 28 s"
               where="flux image-automation"
-              what={<><code>ImageUpdateAutomation</code> rewrites the <code>image:</code> line in <code>services.yaml</code> at the setter marker, commits to <code>fourslide/fourslide</code> main, pushes.</>}
+              what={<><code>ImageUpdateAutomation</code> rewrites the <code>image:</code> line in <code>services.yaml</code> at the setter marker, commits to <code>fourslide/fourslide</code> main, pushes. GitHub then fires its own webhook to the same Flux Receiver host (different path), which immediately triggers the kustomize-controller — no waiting on the next git poll either.</>}
               why="The commit is signed as flux-image-automation@foursli.de, authored by Flux. Reverse a bad rollout the same way you reverse anything else: git revert."
               codeLang="deploy/dev-sites/services.yaml (excerpt)"
               code={`spec:
@@ -203,7 +223,7 @@ spec:
         - image: zot.grubernet.es/claudefirm-com/variant-marketing:1778082473-5403dd44 # {"$imagepolicy": "fourslide:variant-marketing"}`}
             />
             <Step
-              when="t ≈ 120 s"
+              when="t ≈ 29 s"
               where="flux kustomize-controller"
               what="Kustomization detects the spec change, applies it. Knative creates a new Revision, pulls the new digest, spins a Caddy pod (always-warm, minScale=1), cuts traffic over."
               why="Old revisions stick around for fast revert. Knative does the blue/green; we don't touch deployments directly."
@@ -222,7 +242,7 @@ spec:
           ports: [{ containerPort: 8080 }]`}
             />
             <Step
-              when="t ≈ 130 s"
+              when="t ≈ 30 s"
               where="reviewer's browser"
               what={<><code>https://&lt;variant&gt;-dev.foursli.de/</code> serves the new build through the istio-https Gateway and per-host Authentik proxy. The build-stamp at the bottom of each variant card shows the live sha.</>}
               codeLang="Caddyfile baked into the image"
@@ -254,7 +274,7 @@ spec:
             </p>
             <p>
               <strong>The CI runner has no cluster RBAC.</strong>{' '}
-              An earlier version of this pipeline patched the ksvc annotation from CI to force a Knative roll. That worked but required granting the runner SA <code>patch</code> on <code>services.serving.knative.dev</code>. Flux ImageUpdateAutomation removed that need: the runner only builds and pushes; the cluster reads from git.
+              An earlier version patched the ksvc annotation from CI to force a Knative roll. That worked but required granting the runner SA <code>patch</code> on <code>services.serving.knative.dev</code>. Then Flux ImageUpdateAutomation took over the roll, but the runner still had to wait for the 1-minute polling cycle. Now the runner POSTs to a public Flux <code>Receiver</code> webhook (HMAC-signed), and the Receiver fans out to every Image* CR + the IUA in one call. Push-to-live is sub-30 s, end-to-end. The cluster never grants the runner anything but HTTPS.
             </p>
             <p>
               <strong>One declarative loop, fully reversible.</strong>{' '}
