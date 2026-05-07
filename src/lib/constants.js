@@ -6,9 +6,9 @@ import {
 
 export const NAV_ITEMS = [
   { label: 'The Toil', href: '#problem' },
+  { label: 'Burner', href: '#burner' },
   { label: 'Your Team', href: '#team' },
   { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Safeguards', href: '#trust' },
   { label: 'FAQ', href: '#faq' },
 ]
 
@@ -149,6 +149,18 @@ export const STATS = [
 ]
 
 export const FAQS = [
+  {
+    question: 'A subpoena lands. What do you have on my client?',
+    answer: 'Nothing. The agent that ran their matter no longer exists. We never had the prompts, never had the documents, never had the work product — those lived on your Mac the whole time. We can\'t produce what we don\'t hold.',
+  },
+  {
+    question: 'How is "burner" different from "we don\'t store your data"?',
+    answer: 'That promise is operational; it can be violated by a config flag, a subpoena, or a breach. Burner is structural. There is no central system holding the data because there is no central system. The agent literally does not exist after the matter closes.',
+  },
+  {
+    question: 'Doesn\'t the agent need memory to be useful?',
+    answer: 'It needs context to be useful. Memory is one way to get context; loading the matter file at the start of each session is another. Burner agents do the latter. You hand them the matter, they work it, they\'re gone. The lawyer is the continuity; the agent is fungible.',
+  },
   {
     question: 'Do I need an IT department to set this up?',
     answer: 'No. The product is built for owner-operator firms that don\'t have one. You describe how your practice runs — intake, billing, conflict checks — in plain English. If you can brief a new paralegal on day one, you can set this up. An afternoon for a solo, a day or two for a 10-attorney firm.',

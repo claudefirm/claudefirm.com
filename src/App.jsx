@@ -1,6 +1,7 @@
 import Navbar from './components/Navbar'
 import Hero from './components/Hero'
 import Problem from './components/Problem'
+import BurnerPromise from './components/BurnerPromise'
 import MeetYourTeam from './components/MeetYourTeam'
 import HowItWorks from './components/HowItWorks'
 import TrustSafety from './components/TrustSafety'
@@ -16,6 +17,7 @@ export default function App() {
       <Navbar />
       <Hero />
       <Problem />
+      <BurnerPromise />
       <MeetYourTeam />
       <HowItWorks />
       <TrustSafety />

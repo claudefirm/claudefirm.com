@@ -10,14 +10,16 @@ export default function CTA() {
       <div className="relative z-10 max-w-[640px] mx-auto px-6 py-24 md:py-32 text-center">
         <FadeIn>
           <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight">
-            The legal work is where your brain goes.
+            Run your first matter on a burner.
             <br />
-            <span className="text-brass">Everything else is where your systems go.</span>
+            <span className="text-brass">See if you ever go back.</span>
           </h2>
           <p className="mt-5 text-slate-light text-lg leading-relaxed">
-            The firms that figure this out in the next 12 months won't just survive.
-            They'll run practices that look nothing like small-firm practice has
-            looked for the past 30 years.
+            One agent. One matter. Closes when you close the matter. The work
+            product is yours; the agent is gone. The firms that get this right
+            in the next 12 months will run practices that look nothing like
+            small-firm practice has looked for the past 30 years &mdash; and
+            their bar associations will sleep better about it.
           </p>
         </FadeIn>
 

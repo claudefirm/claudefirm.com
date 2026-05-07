@@ -17,34 +17,32 @@ export default function Hero() {
               <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-8 rounded border border-brass/30 bg-brass/[0.06]">
                 <span className="w-1.5 h-1.5 rounded-full bg-brass" />
                 <span className="text-[11px] font-display font-semibold tracking-widest uppercase text-brass/90">
-                  For owner-operator firms · 1&ndash;10 attorneys
+                  Burner positioning · privacy cut
                 </span>
               </div>
             </FadeIn>
             <FadeIn delay={80}>
               <h1 className="font-display font-bold text-[clamp(2rem,7vw,4.5rem)] leading-[1.05] tracking-tight">
-                An AI paralegal{' '}
+                Used once.{' '}
                 <br className="hidden md:block" />
-                that handles the toil,{' '}
-                <br className="hidden md:block" />
-                <span className="text-brass">and never leaves your office.</span>
+                <span className="text-brass">Then burned.</span>
               </h1>
             </FadeIn>
 
             <FadeIn delay={160}>
               <p className="mt-8 text-lg md:text-xl leading-relaxed text-slate-light max-w-[640px]">
-                Intake, billing, drafting, filing &mdash; on your Mac. Client
-                work stays on your machine unless you authorize otherwise. Built
-                for the partner who&rsquo;s drowning in administrative toil and
-                doesn&rsquo;t have an in-house IT team to evaluate AI for them.
+                ClaudeFirm runs an AI paralegal that exists for one matter and
+                then ceases to exist. No persistent memory. No cloud retention.
+                No central system that can be subpoenaed, breached, or quietly
+                trained on your client&rsquo;s case.
               </p>
             </FadeIn>
 
             <FadeIn delay={200}>
-              <p className="mt-4 text-sm italic text-brass/60 max-w-[640px]">
-                [Placeholder until LOI partner visit] &mdash; the partner&rsquo;s
-                time-on-task number and quote replace this block once the
-                90-minute observation lands.
+              <p className="mt-4 text-sm leading-relaxed text-brass/70 max-w-[640px]">
+                Built for owner-operator partners at 1&ndash;10 attorney firms
+                who need capable AI on client work without the data-residency
+                risk that makes their bar association nervous.
               </p>
             </FadeIn>
 
@@ -52,7 +50,7 @@ export default function Hero() {
               <div className="mt-12">
                 <WaitlistForm dark />
                 <div className="mt-5">
-                  <Button variant="ghost" href="#problem">See where the toil hides &darr;</Button>
+                  <Button variant="ghost" href="#problem">How burner agents work &darr;</Button>
                 </div>
               </div>
             </FadeIn>
@@ -67,7 +65,7 @@ export default function Hero() {
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-green-500/80 animate-pulse" />
                     <span className="font-display font-semibold text-[13px] text-white/70">
-                      Your Team
+                      Burner Agents · live for this matter
                     </span>
                   </div>
                 </div>
@@ -101,8 +99,8 @@ export default function Hero() {
 
                 {/* Status bar */}
                 <div className="bg-ink-light px-5 py-2 text-[11px] text-white/20 font-body border-t border-white/[0.06] flex justify-between">
-                  <span>4 agents &middot; runs on your Mac</span>
-                  <span className="text-green-500/50">Approval-gated &middot; full audit</span>
+                  <span>Spawned at matter open &middot; destroyed at matter close</span>
+                  <span className="text-green-500/50">No persistence &middot; no cloud trace</span>
                 </div>
               </div>
             </FadeIn>

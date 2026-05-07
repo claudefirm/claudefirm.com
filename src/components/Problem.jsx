@@ -12,7 +12,7 @@ export default function Problem() {
             <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight text-gray-900">
               The toil.
               <br />
-              <span className="text-slate">What an AI paralegal actually does for you.</span>
+              <span className="text-slate">Now do it on a system that can&rsquo;t be subpoenaed.</span>
             </h2>
           </FadeIn>
           <FadeIn delay={100}>
@@ -20,9 +20,10 @@ export default function Problem() {
               <p className="text-slate italic text-lg leading-relaxed">
                 The work that eats the owner-operator partner&rsquo;s day isn&rsquo;t
                 the practice of law. It&rsquo;s the intake forms, the conflict
-                checks, the billing entries written from memory at 9pm, the
-                follow-up on the invoice you sent in March. Capable enough to
-                hand off. Sensitive enough that you can&rsquo;t hand it to ChatGPT.
+                checks, the billing entries written from memory at 9pm. Capable
+                enough to hand off. Sensitive enough that you can&rsquo;t hand it to
+                ChatGPT &mdash; and risky enough that you don&rsquo;t want a vendor
+                accumulating two years of your matter files in their cloud either.
               </p>
               <p className="mt-3 text-[13px] text-brass-muted font-display font-semibold">
                 — Vision doc §1, the lawyer we&rsquo;re for
