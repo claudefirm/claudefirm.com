@@ -123,7 +123,7 @@ export default function App() {
             claudefirm-com / dev-sites pipeline
           </p>
           <h1 className="mt-3 text-4xl font-semibold tracking-tight md:text-5xl">
-            How a marketing variant goes live in ~2 minutes.
+            How a marketing variant goes live (event-driven, sub-30s).
           </h1>
           <p className="mt-4 max-w-prose text-lg leading-relaxed text-stone-700">
             Four side-by-side cuts of <code>claudefirm.com</code> live at{' '}
