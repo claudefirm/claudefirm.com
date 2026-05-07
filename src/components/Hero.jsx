@@ -17,26 +17,26 @@ export default function Hero() {
               <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-8 rounded border border-brass/30 bg-brass/[0.06]">
                 <span className="w-1.5 h-1.5 rounded-full bg-brass" />
                 <span className="text-[11px] font-display font-semibold tracking-widest uppercase text-brass/90">
-                  ROI &middot; design targets, not customer testimonials
+                  Burner positioning &middot; cost-of-memory cut
                 </span>
               </div>
             </FadeIn>
             <FadeIn delay={80}>
               <h1 className="font-display font-bold text-[clamp(2rem,7vw,4.5rem)] leading-[1.05] tracking-tight">
-                Reclaim{' '}
+                Pay for matters,{' '}
                 <br className="hidden md:block" />
-                10 hours a week{' '}
-                <br className="hidden md:block" />
-                <span className="text-brass">from billing alone.</span>
+                <span className="text-brass">not memory.</span>
               </h1>
             </FadeIn>
 
             <FadeIn delay={160}>
               <p className="mt-8 text-lg md:text-xl leading-relaxed text-slate-light max-w-[640px]">
-                Specific tasks. Specific time. Specific dollars. The 5&ndash;10
-                hours per attorney per week the product targets on billing
-                alone &mdash; at a $300/hour blended rate, that&rsquo;s the
-                product paying for itself in week one.
+                Cloud AI subscriptions price persistence &mdash; the more of
+                your firm&rsquo;s data they hold, the more switching costs you.
+                ClaudeFirm runs burner agents: fresh per matter, gone when it
+                closes. The 5&ndash;10 hours/week of recovered billing land
+                without a vendor accumulating two years of your matter files
+                on the way.
               </p>
             </FadeIn>
 
@@ -67,7 +67,7 @@ export default function Hero() {
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-green-500/80 animate-pulse" />
                     <span className="font-display font-semibold text-[13px] text-white/70">
-                      Your Team
+                      Burner Agents &middot; one matter, one bill
                     </span>
                   </div>
                 </div>
@@ -101,8 +101,8 @@ export default function Hero() {
 
                 {/* Status bar */}
                 <div className="bg-ink-light px-5 py-2 text-[11px] text-white/20 font-body border-t border-white/[0.06] flex justify-between">
-                  <span>4 agents &middot; targeting 5&ndash;10 hrs/wk</span>
-                  <span className="text-green-500/50">Approval-gated &middot; ABA 5.3 audit</span>
+                  <span>Spawn at matter open &middot; bill the matter, not the month</span>
+                  <span className="text-green-500/50">No subscription &middot; no memory tax</span>
                 </div>
               </div>
             </FadeIn>

@@ -6,9 +6,9 @@ import {
 
 export const NAV_ITEMS = [
   { label: 'The Math', href: '#problem' },
+  { label: 'Burner', href: '#burner' },
   { label: 'Your Team', href: '#team' },
   { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Safeguards', href: '#trust' },
   { label: 'FAQ', href: '#faq' },
 ]
 
@@ -149,6 +149,14 @@ export const STATS = [
 ]
 
 export const FAQS = [
+  {
+    question: 'Why "pay for matters, not memory"?',
+    answer: 'Cloud AI subscriptions price persistence — the longer you stay, the more your firm\'s indexed history sits on the vendor\'s disks, and the more switching costs you. Burner agents run once per matter; there is no persistent index to grow, no monthly memory layer to amortize. You pay the compute the matter consumed; that is the bill.',
+  },
+  {
+    question: 'But what about lock-in?',
+    answer: 'We can\'t lock you in with data we don\'t hold. The matters you ran through us are in your matter management system, not ours. Switch tomorrow if a better burner stack ships next quarter. The cost-of-switching collapses to "the next matter\'s compute" — which is what you were going to pay anyway.',
+  },
   {
     question: 'Show me the dollars math.',
     answer: 'At the design-target 5–10 hours of billing-time recovery per attorney per week, against a $300/hour blended rate, you are looking at $1,500–$3,000 per attorney per week of recaptured capacity. For a solo, that pays the product back in week one even at the high end of pricing. For a 5-attorney firm, the recovered capacity is $7,500–$15,000 per week. These are design targets, not customer testimonials — the LOI partner visit produces the first observed measurement.',
