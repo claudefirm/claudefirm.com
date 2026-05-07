@@ -129,12 +129,34 @@ jobs:
           docker push "$IMAGE:latest"
           echo "::notice::pushed $IMAGE:$POLICY_TAG (Flux-tracked) + :$SHA + :latest"
 
-      # No CI-side Knative roll. Flux ImageUpdateAutomation
-      # (fourslide-co deploy/dev-sites/image-automation.yaml) watches the
-      # zot registry, picks the highest <ts>-<sha> tag via ImagePolicy,
-      # writes it into services.yaml at the `# {"$imagepolicy": ...}`
-      # markers, commits to fourslide/fourslide main. Flux reconciles
-      # the resulting spec change, Knative creates a new Revision, the
-      # pod pulls the new digest. Total lag: ~1-2 min from push to live.
-      - name: Done
-        run: echo "image pushed; Flux ImageUpdateAutomation will pin the digest into the ksvc within ~1 min"
+      # Trigger the Flux Receiver in the cluster so ImageRepository +
+      # ImageUpdateAutomation reconcile immediately instead of waiting
+      # for the next 1m polling cycle. Cuts the push-to-live latency
+      # from ~2 min to ~30 s.
+      #
+      # No cluster RBAC required: the Receiver is a public webhook
+      # endpoint at flux-receiver.grubernet.es, gated by an HMAC
+      # signature using the secret stored as FLUX_RECEIVER_HMAC.
+      # FLUX_RECEIVER_PATH is the resolved /hook/<token> path of the
+      # `dev-sites-image-push` Receiver in the fourslide ns.
+      - name: Notify Flux to reconcile
+        if: success()
+        env:
+          PATH_HOOK: ${{ secrets.FLUX_RECEIVER_PATH }}
+          HMAC_SECRET: ${{ secrets.FLUX_RECEIVER_HMAC }}
+          BRANCH: ${{ steps.vars.outputs.branch }}
+          SHA: ${{ steps.overlay.outputs.variant_sha }}
+        run: |
+          set -euo pipefail
+          if [ -z "${PATH_HOOK:-}" ] || [ -z "${HMAC_SECRET:-}" ]; then
+            echo "::warning::FLUX_RECEIVER_{PATH,HMAC} not set; falling back to 1m polling cycle"
+            exit 0
+          fi
+          BODY=$(printf '{"branch":"%s","sha":"%s"}' "$BRANCH" "$SHA")
+          SIG=$(printf '%s' "$BODY" | openssl dgst -sha256 -hmac "$HMAC_SECRET" | awk '{print $2}')
+          curl -fsS -o /dev/null -w "flux-receiver: HTTP %{http_code}\n" \
+            -X POST "https://flux-receiver.grubernet.es${PATH_HOOK}" \
+            -H "Content-Type: application/json" \
+            -H "X-Signature: sha256=${SIG}" \
+            --data "$BODY"
+          echo "::notice::flux notified; ksvc should roll within ~30s"
