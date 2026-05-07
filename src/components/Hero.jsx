@@ -17,28 +17,25 @@ export default function Hero() {
               <div className="inline-flex items-center gap-2 px-3 py-1.5 mb-8 rounded border border-brass/30 bg-brass/[0.06]">
                 <span className="w-1.5 h-1.5 rounded-full bg-brass" />
                 <span className="text-[11px] font-display font-semibold tracking-widest uppercase text-brass/90">
-                  The third way
+                  Burner positioning &middot; anti-cloud cut
                 </span>
               </div>
             </FadeIn>
             <FadeIn delay={80}>
               <h1 className="font-display font-bold text-[clamp(2rem,7vw,4.5rem)] leading-[1.05] tracking-tight">
-                Stop choosing between{' '}
+                Cloud AI remembers.{' '}
                 <br className="hidden md:block" />
-                toy AI{' '}
-                <br className="hidden md:block" />
-                <span className="text-brass">and dangerous AI.</span>
+                <span className="text-brass">ClaudeFirm forgets, by design.</span>
               </h1>
             </FadeIn>
 
             <FadeIn delay={160}>
               <p className="mt-8 text-lg md:text-xl leading-relaxed text-slate-light max-w-[640px]">
-                Handcuffed chatbots can&rsquo;t take action. Reckless free
-                agents can email out your client list. Lawyers are already
-                pasting privileged documents into ChatGPT against firm policy
-                because the safe alternatives don&rsquo;t get the work done.
-                ClaudeFirm is the third way: capable agents with safeguards
-                built in, running on your Mac.
+                The default for legal AI is &ldquo;trust us&rdquo; &mdash; trust us not to
+                train, trust us not to log, trust us when the subpoena arrives.
+                ClaudeFirm replaces &ldquo;trust us&rdquo; with &ldquo;the data
+                isn&rsquo;t there.&rdquo; Burner agents on your Mac. Lawyer&rsquo;s
+                files don&rsquo;t leave the lawyer&rsquo;s office.
               </p>
             </FadeIn>
 
@@ -69,7 +66,7 @@ export default function Hero() {
                   <div className="flex items-center gap-2">
                     <div className="w-2 h-2 rounded-full bg-green-500/80 animate-pulse" />
                     <span className="font-display font-semibold text-[13px] text-white/70">
-                      Your Team
+                      Burner Agents &middot; on your machine
                     </span>
                   </div>
                 </div>
@@ -103,8 +100,8 @@ export default function Hero() {
 
                 {/* Status bar */}
                 <div className="bg-ink-light px-5 py-2 text-[11px] text-white/20 font-body border-t border-white/[0.06] flex justify-between">
-                  <span>4 agents &middot; capable + safeguarded</span>
-                  <span className="text-green-500/50">On-device &middot; approval-gated</span>
+                  <span>Local-first &middot; no telemetry &middot; no training</span>
+                  <span className="text-green-500/50">No cloud trace &middot; no cloud trust</span>
                 </div>
               </div>
             </FadeIn>

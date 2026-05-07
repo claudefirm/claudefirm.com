@@ -6,9 +6,9 @@ import {
 
 export const NAV_ITEMS = [
   { label: 'The Dichotomy', href: '#problem' },
+  { label: 'Burner', href: '#burner' },
   { label: 'Your Team', href: '#team' },
   { label: 'How It Works', href: '#how-it-works' },
-  { label: 'Safeguards', href: '#trust' },
   { label: 'FAQ', href: '#faq' },
 ]
 
@@ -149,6 +149,14 @@ export const STATS = [
 ]
 
 export const FAQS = [
+  {
+    question: 'A breach happens upstream — the model vendor gets hacked. What leaks?',
+    answer: 'For local-only matters: nothing of yours. For matters that authorized a cloud step: the stripped, de-identified payload that crossed the boundary, captured in your local audit. PII never crossed. The breach exposes a payload that doesn\'t identify anyone.',
+  },
+  {
+    question: 'How do you know they\'re not training on my data?',
+    answer: 'Because there\'s nothing to train on. The agent runs on your Mac; the prompts and documents never leave the machine for local-only matters. For cloud-authorized steps, the request is stripped before it goes out — and we don\'t persist either side. We can\'t train on data that didn\'t reach us.',
+  },
   {
     question: 'Why would a lawyer use ChatGPT if it\'s risky?',
     answer: 'Because the safe alternatives don\'t get the work done. Handcuffed chatbots can\'t process intake forms or draft time entries. Reckless free agents can, so lawyers take the risk. The demand signal isn\'t what they say in surveys; it\'s what they actually do.',

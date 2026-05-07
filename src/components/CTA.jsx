@@ -10,14 +10,15 @@ export default function CTA() {
       <div className="relative z-10 max-w-[640px] mx-auto px-6 py-24 md:py-32 text-center">
         <FadeIn>
           <h2 className="font-display font-bold text-3xl md:text-[2.75rem] leading-[1.1] tracking-tight">
-            The legal work is where your brain goes.
+            Stop renting your firm&rsquo;s memory
             <br />
-            <span className="text-brass">Everything else is where your systems go.</span>
+            <span className="text-brass">to AI vendors.</span>
           </h2>
           <p className="mt-5 text-slate-light text-lg leading-relaxed">
-            The firms that figure this out in the next 12 months won't just survive.
-            They'll run practices that look nothing like small-firm practice has
-            looked for the past 30 years.
+            Run a burner. Your client work doesn&rsquo;t leave your office; the
+            agent doesn&rsquo;t survive the matter; nothing trains on what
+            didn&rsquo;t reach a cloud. The third way that&rsquo;s structural,
+            not operational.
           </p>
         </FadeIn>
 
