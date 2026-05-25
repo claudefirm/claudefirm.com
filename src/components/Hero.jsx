@@ -5,11 +5,11 @@ import { TEAM_MEMBERS } from '../lib/constants'
 
 export default function Hero() {
   return (
-    <section className="relative bg-ink text-white min-h-screen flex items-center overflow-hidden">
+    <section className="relative bg-ink text-white min-h-screen flex items-center overflow-hidden pt-[72px]">
       <div className="absolute inset-0 grid-bg opacity-60" />
       <div className="absolute top-1/4 right-1/4 w-[600px] h-[600px] bg-brass/[0.04] rounded-full blur-[120px]" />
 
-      <div className="relative z-10 max-w-[1140px] mx-auto px-6 py-32 md:py-0 w-full">
+      <div className="relative z-10 max-w-[1140px] mx-auto px-6 py-20 md:py-16 w-full">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center">
           {/* Left content */}
           <div className="lg:col-span-7">
