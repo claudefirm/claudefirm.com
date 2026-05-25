@@ -12,7 +12,12 @@
   "assets": {
     "directory": "./dist",
     "binding": "ASSETS",
-    "not_found_handling": "single-page-application"
+    "not_found_handling": "single-page-application",
+    // Route these to the Worker FIRST. Without this, the SPA fallback
+    // (not_found_handling) intercepts browser navigation requests
+    // (Sec-Fetch-Dest: document) for non-asset paths and serves index.html
+    // before the Worker runs — which silently shadowed /admin + the API.
+    "run_worker_first": ["/admin", "/admin/*", "/api/*", "/callback"]
   },
   "kv_namespaces": [
     {
