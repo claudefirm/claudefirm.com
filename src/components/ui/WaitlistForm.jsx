@@ -1,14 +1,45 @@
-import { useState } from 'react'
+import { useRef, useState } from 'react'
 import { ArrowRight, Check } from 'lucide-react'
+import { Turnstile } from '@marsidev/react-turnstile'
+import { TURNSTILE_SITE_KEY } from '../../lib/constants'
 
 export default function WaitlistForm({ dark }) {
   const [email, setEmail] = useState('')
-  const [status, setStatus] = useState('idle')
+  const [status, setStatus] = useState('idle') // idle | submitting | success | error
+  const [error, setError] = useState('')
+  const tokenRef = useRef('')
+  const turnstileRef = useRef(null)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!email) return
-    setStatus('success')
+    if (!email || status === 'submitting') return
+    if (!tokenRef.current) {
+      setError("One sec — we're verifying you're human. Try again in a moment.")
+      return
+    }
+    setStatus('submitting')
+    setError('')
+    try {
+      const res = await fetch('/api/waitlist', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email, turnstileToken: tokenRef.current }),
+      })
+      const data = await res.json().catch(() => ({}))
+      if (res.ok && data.ok) {
+        setStatus('success')
+      } else {
+        setStatus('error')
+        setError(data.error || 'Something went wrong. Please try again.')
+        turnstileRef.current?.reset()
+        tokenRef.current = ''
+      }
+    } catch {
+      setStatus('error')
+      setError('Network error. Please try again.')
+      turnstileRef.current?.reset()
+      tokenRef.current = ''
+    }
   }
 
   if (status === 'success') {
@@ -18,7 +49,7 @@ export default function WaitlistForm({ dark }) {
           <Check className="w-4 h-4 text-brass" />
         </div>
         <p className={`font-display font-semibold ${dark ? 'text-white' : 'text-gray-900'}`}>
-          Waitlist opens soon — email <a className="underline" href="mailto:hello@claudefirm.com">hello@claudefirm.com</a> in the meantime.
+          You&apos;re on the list — we&apos;ll be in touch. Questions? <a className="underline" href="mailto:hello@claudefirm.com">hello@claudefirm.com</a>
         </p>
       </div>
     )
@@ -41,12 +72,23 @@ export default function WaitlistForm({ dark }) {
         />
         <button
           type="submit"
-          className="group px-7 py-3.5 bg-brass text-ink font-display font-semibold text-sm rounded hover:bg-brass-light transition-all duration-300 hover:shadow-[0_0_24px_rgba(196,150,60,0.3)] cursor-pointer flex items-center gap-2"
+          disabled={status === 'submitting'}
+          className="group px-7 py-3.5 bg-brass text-ink font-display font-semibold text-sm rounded hover:bg-brass-light transition-all duration-300 hover:shadow-[0_0_24px_rgba(196,150,60,0.3)] cursor-pointer flex items-center gap-2 disabled:opacity-60 disabled:cursor-not-allowed"
         >
-          Join Waitlist
+          {status === 'submitting' ? 'Joining…' : 'Join Waitlist'}
           <ArrowRight className="w-4 h-4 transition-transform duration-300 group-hover:translate-x-1" />
         </button>
       </form>
+      <Turnstile
+        ref={turnstileRef}
+        siteKey={TURNSTILE_SITE_KEY}
+        options={{ theme: dark ? 'dark' : 'light', size: 'flexible' }}
+        onSuccess={(token) => { tokenRef.current = token }}
+        onExpire={() => { tokenRef.current = '' }}
+        onError={() => { tokenRef.current = '' }}
+        className="mt-3"
+      />
+      {error && <p className="mt-2 text-sm text-red-400 font-body">{error}</p>}
     </div>
   )
 }

@@ -1,55 +1,75 @@
 ---
 name: cloudflare-infra
-description: Manage ClaudeFirm's Cloudflare infrastructure — Workers deployment, KV storage, Turnstile bot protection, and Access authentication. Use when deploying, managing secrets, adding/removing admin users, modifying Access policies, checking KV data, debugging Worker routes, or any Cloudflare configuration task for this project.
+description: Manage ClaudeFirm's Cloudflare infrastructure — the `claudefirm` Worker, static asset hosting, KV storage, Turnstile bot protection, and the Authentik-OIDC-gated admin route. Use when deploying, managing Worker secrets, inspecting waitlist KV, debugging Worker routes, or any Cloudflare configuration task for this project.
 ---
 
 # ClaudeFirm Cloudflare Infrastructure
 
 ## Architecture
 
-Cloudflare Worker (not Pages) with Vite + React SPA static assets, `worker.js` API routes, KV storage, Turnstile (invisible), and Cloudflare Access (Google login).
+A single Cloudflare **Worker** (`claudefirm`) serves the Vite + React SPA as static
+assets (the `ASSETS` binding) and runs `worker.js` API routes via **Hono**:
 
-**Key files:** `wrangler.jsonc` (Worker config + KV), `worker.js` (API routes), `infra/setup.sh` (Access config via CF API).
+- `POST /api/waitlist` — Turnstile-verified signup, written to the `WAITLIST` KV.
+- `/admin` + `GET /api/admin/waitlist` — waitlist viewer, gated by **Worker-native
+  OIDC** (`@hono/oidc-auth`) against **Authentik** at `auth.darrengruber.com`.
+- everything else falls through to the static SPA (`not_found_handling=single-page-application`).
 
-## Credentials
+There is **no Cloudflare Access / Zero Trust** and **no Google login** — admin auth is
+the Worker's own OIDC flow against Authentik. See ADR-0001 (`docs/adr/`).
 
-| Secret | Where | Retrieve |
-|--------|-------|----------|
-| CF API token | 1Password | `op item get hnk6uyj3tcg4tfvzse3fi3b7de --fields credential --reveal` |
-| TURNSTILE_SECRET_KEY | Wrangler secret | Set via `npx wrangler secret put` |
-| Turnstile site key | Hardcoded | `0x4AAAAAACuMSzRVNaEyZe7H` in `WaitlistForm.jsx` |
+**Key files:** `wrangler.jsonc` (Worker config + assets + KV + OIDC vars),
+`worker.js` (Hono app), `src/components/ui/WaitlistForm.jsx` (Turnstile widget + POST).
+
+## Credentials & secrets
+
+Worker secrets are set with `wrangler secret put <NAME>` (persist across deploys; not in CI):
+
+| Secret | Purpose | Source |
+|--------|---------|--------|
+| `TURNSTILE_SECRET_KEY` | Turnstile server-side verification | Cloudflare Turnstile widget |
+| `OIDC_CLIENT_ID` | Authentik OAuth2 client id | darren-iac `authentik_app` output / SSM |
+| `OIDC_CLIENT_SECRET` | Authentik OAuth2 client secret | darren-iac `authentik_app` output / SSM |
+| `OIDC_AUTH_SECRET` | ≥32-char key signing the session JWT cookie | generated |
+
+Non-secret OIDC config (`OIDC_ISSUER`, `OIDC_REDIRECT_URI`) lives in `wrangler.jsonc` `vars`.
+Turnstile **site** key is `0x4AAAAAACuMSzRVNaEyZe7H` (public, in `src/lib/constants.js`).
 
 ## Resource IDs
 
 - Account: `c6c0da6f79d5b4a62fe1d2eff2f108e5`
 - KV (WAITLIST): `7a77531c04a440d59b409192363fab11`
-- Google IdP: `244d93e6-0476-41a0-803d-8aa03502d87c`
-- Access App: `7cae2b60-d5be-402e-a0e9-9ad33cb3ac20`
+- Zone (claudefirm.com): `bd7975f1c64360961890dea539517c83`
+- Authentik OIDC app slug: `claudefirm-admin` (provisioned via darren-iac `authentik_app`)
 
 ## Common Operations
 
 ### Deploy
-Pushes to `main` auto-deploy. Manual: `npm run deploy`.
+Push to `main` → `.github/workflows/deploy.yml` mints a short-lived, Worker-scoped CF
+token from OpenBao via GitHub OIDC, then runs `wrangler deploy`. Manual: `pnpm deploy`.
 
-### Manage secrets
+### Set / rotate a secret
 ```
-npx wrangler secret put TURNSTILE_SECRET_KEY --name claudefirm
-```
-
-### Inspect waitlist KV
-```
-npx wrangler kv key list --namespace-id 7a77531c04a440d59b409192363fab11
-npx wrangler kv get <email> --namespace-id 7a77531c04a440d59b409192363fab11
+wrangler secret put OIDC_CLIENT_SECRET --name claudefirm
 ```
 
-### Add/remove admin users
-Edit `ADMIN_EMAILS` in `infra/setup.sh`, then:
+### Inspect the waitlist KV
 ```
-CF_API_TOKEN=$(op item get hnk6uyj3tcg4tfvzse3fi3b7de --fields credential --reveal) ./infra/setup.sh
+wrangler kv key list  --namespace-id 7a77531c04a440d59b409192363fab11
+wrangler kv key get <email> --namespace-id 7a77531c04a440d59b409192363fab11
 ```
 
-### Add new API route
-Add handler in `worker.js`, add route match in the `fetch()` export. Static assets fall through to `env.ASSETS.fetch(request)`.
+### Local development
+- SPA only (hot reload): `pnpm dev` (Vite).
+- Full Worker (API routes + assets): `pnpm cf-dev` (`wrangler dev`).
 
-### Modify Access policy directly
-See [references/cloudflare-api.md](references/cloudflare-api.md) for CF API patterns for Access, Turnstile, and KV operations.
+### Manage who can view /admin
+Admin access is governed by the **Authentik** application's authorization policy
+(auth.darrengruber.com), not by an allow-list in this repo. Add a user there, or adjust
+the app's policy binding in darren-iac. External viewers must have an Authentik account.
+
+### Infra (DNS, custom domain, OIDC app, deploy token)
+Lives in **darren-iac**: `tofu/cloudflare/claudefirm_com.tf` (zone, DNS, Worker custom
+domain), the `authentik_app` (oauth2) for OIDC, and
+`tofu/controlplane/openbao/cloudflare-pages-ci.tf` (the `claudefirm-worker-deploy` role +
+`worker-claudefirm` CF secrets-engine role).

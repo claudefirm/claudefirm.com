@@ -1,0 +1,89 @@
+name: Deploy to Cloudflare Worker
+
+# Production deploy: builds the Vite SPA and uploads worker.js + dist/ to the
+# `claudefirm` Cloudflare Worker. The Cloudflare API token is NOT stored
+# anywhere — it is minted on demand by the OpenBao Cloudflare secrets engine,
+# scoped to Workers Scripts + KV write only, with a short lease. This job runs
+# on the in-cluster claudefirm ARC runner, so it reaches OpenBao over the
+# cluster service (plain HTTP, no public endpoint).
+#
+# Auth chain: GitHub issues an OIDC JWT (id-token: write) -> vault-action
+# exchanges it at the jwt-github-actions auth method -> OpenBao role
+# `claudefirm-worker-deploy` (bound to this repo + main) -> read
+# cloudflare-account/creds/worker-claudefirm -> short-lived CF token.
+# Role + policy: darren-iac tofu/controlplane/openbao/cloudflare-pages-ci.tf.
+#
+# Worker secrets (TURNSTILE_SECRET_KEY, OIDC_CLIENT_ID, OIDC_CLIENT_SECRET,
+# OIDC_AUTH_SECRET) are NOT managed here — set them once with
+# `wrangler secret put`; they persist across deploys.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "src/**"
+      - "public/**"
+      - "index.html"
+      - "worker.js"
+      - "wrangler.jsonc"
+      - "vite.config.js"
+      - "package.json"
+      - "pnpm-lock.yaml"
+      - ".github/workflows/deploy.yml"
+  workflow_dispatch:
+
+# Required for GitHub OIDC. id-token: write lets the job request a signed JWT.
+permissions:
+  id-token: write
+  contents: read
+
+concurrency:
+  group: worker-deploy
+  cancel-in-progress: false
+
+env:
+  # In-cluster OpenBao service (this job only runs on the in-cluster runner).
+  OPENBAO_ADDR: http://openbao-active.openbao.svc.cluster.local:8200
+  # Non-secret. Cloudflare account that owns the claudefirm Worker.
+  CLOUDFLARE_ACCOUNT_ID: c6c0da6f79d5b4a62fe1d2eff2f108e5
+
+jobs:
+  deploy:
+    runs-on: arc-runners-claudefirm
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 10
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: pnpm
+
+      - run: pnpm install --frozen-lockfile
+
+      - run: pnpm build
+
+      # Mint a scoped, short-lived Cloudflare token from OpenBao via GitHub OIDC.
+      # Exports CLOUDFLARE_API_TOKEN into the job env for the deploy step.
+      - name: Mint Cloudflare token (OpenBao)
+        uses: hashicorp/vault-action@v3
+        with:
+          url: ${{ env.OPENBAO_ADDR }}
+          method: jwt
+          path: jwt-github-actions
+          role: claudefirm-worker-deploy
+          # Must match bound_audiences on the OpenBao role. GitHub's default
+          # OIDC audience is the repository owner URL.
+          jwtGithubAudience: https://github.com/claudefirm
+          secrets: |
+            cloudflare-account/creds/worker-claudefirm token_value | CLOUDFLARE_API_TOKEN
+
+      - name: Deploy
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
+          accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
+          command: deploy

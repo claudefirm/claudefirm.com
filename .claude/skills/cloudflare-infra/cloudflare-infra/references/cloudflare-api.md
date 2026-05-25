@@ -6,64 +6,14 @@ Account ID: `c6c0da6f79d5b4a62fe1d2eff2f108e5`
 
 Retrieve token: `op item get hnk6uyj3tcg4tfvzse3fi3b7de --fields credential --reveal`
 
-## Access Applications
+## Admin auth (Authentik OIDC — NOT Cloudflare Access)
 
-### List apps
-```
-GET /accounts/{account_id}/access/apps
-```
-
-### Create app
-```
-POST /accounts/{account_id}/access/apps
-{
-  "name": "App Name",
-  "type": "self_hosted",
-  "self_hosted_domains": ["claudefirm.com/path"],
-  "session_duration": "24h",
-  "allowed_idps": ["<idp_id>"],
-  "auto_redirect_to_identity": true,
-  "policies": [{
-    "name": "Policy Name",
-    "decision": "allow",
-    "precedence": 1,
-    "include": [{"email": {"email": "user@example.com"}}]
-  }]
-}
-```
-
-### Update app
-```
-PUT /accounts/{account_id}/access/apps/{app_id}
-```
-Same body as create (without policies — update those separately).
-
-### Update policy
-```
-PUT /accounts/{account_id}/access/apps/{app_id}/policies/{policy_id}
-{
-  "name": "Policy Name",
-  "decision": "allow",
-  "precedence": 1,
-  "include": [{"email": {"email": "user@example.com"}}]
-}
-```
-
-### Delete app
-```
-DELETE /accounts/{account_id}/access/apps/{app_id}
-```
-
-## Access Identity Providers
-
-### List IdPs
-```
-GET /accounts/{account_id}/access/identity_providers
-```
-
-Current IdPs:
-- Google: `244d93e6-0476-41a0-803d-8aa03502d87c`
-- OTP (disabled in admin): `cf228fd9-4a47-4958-8c0c-000d84b4fa90`
+The `/admin` route is gated by the Worker's own OIDC flow (`@hono/oidc-auth`) against
+Authentik at `auth.darrengruber.com` — there is no Cloudflare Access application. Manage
+who can sign in via the **Authentik** application's authorization policy, provisioned in
+darren-iac (`authentik_app`, provider_type `oauth2`, slug `claudefirm-admin`). The OAuth2
+client id/secret flow to the Worker as the `OIDC_CLIENT_ID` / `OIDC_CLIENT_SECRET`
+secrets. External viewers must have an Authentik account.
 
 ## KV Operations (prefer wrangler CLI)
 
