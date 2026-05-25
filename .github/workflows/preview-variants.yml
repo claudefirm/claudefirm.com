@@ -9,10 +9,14 @@ name: Preview variants
 # which has a DinD sidecar with zot creds pre-mounted at /root/.docker/
 # via the `zot-docker-config` secret. No GitHub-hosted runner involved.
 
+# SUSPENDED (2026-05-25): the variant-* preview pipeline is paused while the
+# production site moves to the Cloudflare Worker (see ADR-0001). The automatic
+# push trigger is disabled; re-enable by uncommenting the `push:` block below.
+# Manual builds still work via workflow_dispatch.
 on:
-  push:
-    branches:
-      - 'variant-*'
+  # push:
+  #   branches:
+  #     - 'variant-*'
   workflow_dispatch:
     inputs:
       branch:

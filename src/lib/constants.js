@@ -4,6 +4,11 @@ import {
   Shield, Eye, FileCheck, Server,
 } from 'lucide-react'
 
+// Cloudflare Turnstile public site key — must match the widget configured in
+// the Cloudflare account. The matching server-side secret is the Worker's
+// TURNSTILE_SECRET_KEY (set via `wrangler secret put`).
+export const TURNSTILE_SITE_KEY = '0x4AAAAAACuMSzRVNaEyZe7H'
+
 export const NAV_ITEMS = [
   { label: 'The Problem', href: '#problem' },
   { label: 'Your Team', href: '#team' },
