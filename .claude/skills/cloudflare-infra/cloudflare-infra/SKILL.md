@@ -69,7 +69,16 @@ Admin access is governed by the **Authentik** application's authorization policy
 the app's policy binding in darren-iac. External viewers must have an Authentik account.
 
 ### Infra (DNS, custom domain, OIDC app, deploy token)
-Lives in **darren-iac**: `tofu/cloudflare/claudefirm_com.tf` (zone, DNS, Worker custom
-domain), the `authentik_app` (oauth2) for OIDC, and
-`tofu/controlplane/openbao/cloudflare-pages-ci.tf` (the `claudefirm-worker-deploy` role +
-`worker-claudefirm` CF secrets-engine role).
+Lives in **darren-iac**:
+- `tofu/cloudflare/claudefirm_com.tf` — zone, DNS, and the `cloudflare_workers_custom_domain` bindings (apex + www) → the `claudefirm` Worker.
+- `tofu/authentik-darrengruber/apps.auto.tfvars` — the `claudefirm-admin` OAuth2 app on the **auth.darrengruber.com** instance (NOT the claudefirm-platform Authentik). Its client id/secret are written to SSM `/claudefirm-admin/authentik/client_{id,secret}`.
+- `tofu/controlplane/openbao/cloudflare-pages-ci.tf` — the `claudefirm-worker-deploy` JWT role + `worker-claudefirm` CF secrets-engine role.
+
+These workspaces are CI-skipped; apply out-of-band with `bao-exec` (darrengruber account).
+
+## Gotchas
+
+See [references/gotchas.md](references/gotchas.md): the `run_worker_first` SPA-shadow
+trap (`/admin` rendered the marketing page in browsers but redirected under curl), the
+two-phase Worker custom-domain cutover + 30-min DNS negative-cache, and how to mint
+scoped CF tokens (incl. recovering the Turnstile secret) without the Global API key.
