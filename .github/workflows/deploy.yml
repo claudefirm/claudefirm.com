@@ -51,13 +51,13 @@ jobs:
   deploy:
     runs-on: arc-runners-claudefirm
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4.3.1
 
-      - uses: pnpm/action-setup@v4
+      - uses: pnpm/action-setup@b906affcce14559ad1aafd4ab0e942779e9f58b1 # v4.3.0
         with:
           version: 10
 
-      - uses: actions/setup-node@v4
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
         with:
           node-version: 22
           cache: pnpm
@@ -69,7 +69,7 @@ jobs:
       # Mint a scoped, short-lived Cloudflare token from OpenBao via GitHub OIDC.
       # Exports CLOUDFLARE_API_TOKEN into the job env for the deploy step.
       - name: Mint Cloudflare token (OpenBao)
-        uses: hashicorp/vault-action@v3
+        uses: hashicorp/vault-action@4c06c5ccf5c0761b6029f56cfb1dcf5565918a3b # v3.4.0
         with:
           url: ${{ env.OPENBAO_ADDR }}
           method: jwt
@@ -82,7 +82,7 @@ jobs:
             cloudflare-account/creds/worker-claudefirm token_value | CLOUDFLARE_API_TOKEN
 
       - name: Deploy
-        uses: cloudflare/wrangler-action@v3
+        uses: cloudflare/wrangler-action@9acf94ace14e7dc412b076f2c5c20b8ce93c79cd # v3.15.0
         with:
           apiToken: ${{ env.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ env.CLOUDFLARE_ACCOUNT_ID }}
